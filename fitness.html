@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELITE CONTINENTALE — Inscription Championnat</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dark: #8B6914;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --dark2: #1A1A1A;
+    --dark3: #222222;
+    --gray: #444444;
+    --light-gray: #888888;
+    --white: #F5F2EC;
+    --red: #C0392B;
+    --green: #1E8449;
+    --border: rgba(201,168,76,0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+ 
+  /* PAGES */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+ 
+  /* ---- HERO / LANDING ---- */
+  #page-home {
+    background: var(--black);
+    display: none;
+    flex-direction: column;
+  }
+  #page-home.active { display: flex; }
+ 
+  .hero-bg {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(201,168,76,0.04) 39px, rgba(201,168,76,0.04) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(201,168,76,0.04) 39px, rgba(201,168,76,0.04) 40px);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .hero-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 6px 20px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 12vw, 130px);
+    line-height: 0.9;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 2px;
+  }
+  .hero-title span {
+    display: block;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title .white-text {
+    color: var(--white);
+    background: none;
+    -webkit-text-fill-color: var(--white);
+  }
+  .hero-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(16px, 3vw, 26px);
+    letter-spacing: 6px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    text-align: center;
+    margin: 20px 0 50px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-divider {
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 50px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--black);
+    border: none;
+    padding: 16px 40px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 16px 40px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-secondary:hover { background: rgba(201,168,76,0.1); transform: translateY(-1px); }
+ 
+  .hero-stats {
+    display: flex;
+    gap: 60px;
+    margin-top: 80px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+  }
+ 
+  /* ---- FORM PAGE ---- */
+  #page-form {
+    background: var(--black);
+    padding: 0;
+  }
+  .form-header {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .form-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  .form-header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+  }
+ 
+  .form-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 20px 80px;
+  }
+  .form-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .form-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+ 
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-grid.full { grid-template-columns: 1fr; }
+  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+ 
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+  }
+  .field-required { color: var(--gold); margin-left: 2px; }
+ 
+  input[type="text"],
+  input[type="tel"],
+  input[type="date"],
+  select,
+  textarea {
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,0.15);
+    color: var(--white);
+    padding: 13px 16px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 17px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    border-radius: 0;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    background: var(--dark3);
+  }
+  input::placeholder, textarea::placeholder { color: var(--gray); }
+  select option { background: var(--dark2); color: var(--white); }
+ 
+  /* PDF Upload Zone */
+  .upload-zone {
+    border: 1px dashed rgba(201,168,76,0.3);
+    background: var(--dark2);
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .upload-zone:hover { border-color: var(--gold); background: var(--dark3); }
+  .upload-zone.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    width: 100%; height: 100%; padding: 0; border: none;
+  }
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .upload-hint { font-size: 15px; color: var(--light-gray); }
+  .upload-success {
+    background: rgba(30,132,73,0.15);
+    border: 1px solid rgba(30,132,73,0.4);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #4CAF50;
+    margin-top: 10px;
+  }
+ 
+  .form-block {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  .form-block-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  .submit-zone {
+    text-align: center;
+    padding: 40px 0 0;
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--black);
+    border: none;
+    padding: 20px 80px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+  .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+ 
+  /* Terms checkbox */
+  .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--gold);
+    cursor: pointer;
+    padding: 0;
+  }
+  .checkbox-label { font-size: 15px; color: var(--light-gray); line-height: 1.5; cursor: pointer; }
+ 
+  /* Notification */
+  .notif {
+    position: fixed;
+    top: 20px; right: 20px;
+    padding: 16px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    z-index: 9999;
+    max-width: 360px;
+    transform: translateX(120%);
+    transition: transform 0.3s;
+  }
+  .notif.show { transform: translateX(0); }
+  .notif.success { background: #1A3A25; border-left: 3px solid var(--green); color: #4CAF50; }
+  .notif.error { background: #3A1A1A; border-left: 3px solid var(--red); color: #E74C3C; }
+ 
+  /* ---- ADMIN PAGE ---- */
+  #page-admin { background: var(--black); }
+  .admin-login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  .login-box {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  .login-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .login-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .login-box .field-group { text-align: left; margin-bottom: 16px; }
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--black);
+    border: none;
+    padding: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+  }
+  .btn-login:hover { opacity: 0.9; }
+  .login-err { color: var(--red); font-size: 13px; margin-top: 12px; display: none; }
+ 
+  /* Admin dashboard */
+  .admin-dash { display: none; }
+  .admin-top {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .admin-top-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .admin-top-right { display: flex; align-items: center; gap: 16px; }
+  .admin-user { font-size: 13px; color: var(--light-gray); }
+  .btn-logout {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 8px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-logout:hover { background: rgba(201,168,76,0.1); }
+ 
+  .admin-content { padding: 32px; }
+  .admin-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .admin-stat {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+  }
+  .admin-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .admin-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+ 
+  .admin-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .admin-section-title::after { content:''; flex:1; height:1px; background: var(--border); }
+ 
+  .admin-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .admin-toolbar input {
+    max-width: 280px;
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  .admin-toolbar select { max-width: 200px; padding: 10px 16px; font-size: 15px; }
+ 
+  .registrations-table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  thead tr {
+    background: var(--dark3);
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 14px 16px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--dark2); }
+  td { padding: 12px 16px; color: var(--white); vertical-align: middle; }
+  td.muted { color: var(--light-gray); }
+ 
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .badge-new { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-pdf { background: rgba(30,132,73,0.15); color: #4CAF50; cursor: pointer; }
+  .badge-nopdf { background: rgba(68,68,68,0.3); color: var(--light-gray); }
+ 
+  .btn-view {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 6px 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-view:hover { background: rgba(201,168,76,0.1); }
+  .btn-delete {
+    background: transparent;
+    border: 1px solid rgba(192,57,43,0.3);
+    color: #E74C3C;
+    padding: 6px 12px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 6px;
+  }
+  .btn-delete:hover { background: rgba(192,57,43,0.1); }
+ 
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--light-gray);
+  }
+  .empty-state .big { font-size: 60px; margin-bottom: 16px; }
+  .empty-state p { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 2px; font-size: 14px; }
+ 
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--gold);
+  }
+  .modal-close {
+    background: none; border: none; color: var(--light-gray);
+    font-size: 22px; cursor: pointer; line-height: 1;
+  }
+  .modal-body { padding: 24px; }
+  .detail-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+    font-size: 14px;
+  }
+  .detail-key {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+  .detail-val { color: var(--white); }
+ 
+  /* Success page */
+  #page-success {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--black);
+  }
+  #page-success.active { display: flex; }
+  .success-icon { font-size: 80px; margin-bottom: 24px; }
+  .success-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  .success-msg { font-size: 16px; color: var(--light-gray); max-width: 480px; margin-bottom: 40px; }
+  .success-ref {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    padding: 16px 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+ 
+  /* Back button */
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .back-btn:hover { color: var(--gold); }
+  .back-btn::before { content: '←'; }
+ 
+  .form-intro {
+    text-align: center;
+    padding: 50px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  .form-intro h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .form-intro p {
+    font-size: 14px;
+    color: var(--light-gray);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 2px;
+  }
+ 
+  .counter-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    margin-left: 10px;
+  }
+ 
+  /* Export btn */
+  .btn-export {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    padding: 10px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: auto;
+  }
+  .btn-export:hover { background: rgba(201,168,76,0.1); }
+ 
+  .field-error { color: #E74C3C; font-size: 12px; margin-top: 4px; display: none; }
+  .field-error.show { display: block; }
+  input.invalid, select.invalid { border-color: #E74C3C; }
+</style>
+</head>
+<body>
+ 
+<!-- ====================== HOME PAGE ====================== -->
+<div id="page-home" class="page">
+  <div class="hero-bg">
+    <div class="hero-badge">Fédération Africaine de Powerlifting</div>
+    <h1 class="hero-title">
+      <span>ELITE</span>
+      <span class="white-text">CONTINENTALE</span>
+    </h1>
+    <p class="hero-sub">Championnat Régional de Powerlifting</p>
+    <div class="hero-divider"></div>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('form')">INSCRIPTION EN LIGNE</button>
+      <button class="btn-secondary" onclick="showPage('admin')">ESPACE ADMIN</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-inscrits">—</div>
+        <div class="stat-label">Inscrits</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Catégories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10</div>
+        <div class="stat-label">Régions</div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ====================== FORM PAGE ====================== -->
+<div id="page-form" class="page">
+  <div class="form-header">
+    <div class="form-logo" onclick="showPage('home')">ELITE CONTINENTALE</div>
+    <div class="form-header-title">Formulaire d'inscription</div>
+    <button class="back-btn" onclick="showPage('home')">Retour</button>
+  </div>
+  <div class="form-container">
+    <div class="form-intro">
+      <h1>FORMULAIRE D'INSCRIPTION</h1>
+      <p>CHAMPIONNAT RÉGIONAL DE POWERLIFTING — ELITE CONTINENTALE</p>
+    </div>
+ 
+    <form id="reg-form">
+      <!-- IDENTITÉ -->
+      <div class="form-block">
+        <div class="form-block-title">Informations personnelles</div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Nom <span class="field-required">*</span></label>
+            <input type="text" id="f-nom" name="nom" placeholder="DUPONT" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un nom valide sans chiffres">
+            <span class="field-error" id="err-nom">Ce champ est obligatoire</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Prénom <span class="field-required">*</span></label>
+            <input type="text" id="f-prenom" name="prenom" placeholder="Jean" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un prénom valide sans chiffres">
+            <span class="field-error" id="err-prenom">Ce champ est obligatoire</span>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Date de naissance <span class="field-required">*</span></label>
+            <input type="date" id="f-ddn" name="ddn" required>
+            <span class="field-error" id="err-ddn">Ce champ est obligatoire</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Lieu de naissance <span class="field-required">*</span></label>
+            <input type="text" id="f-lieu-naissance" name="lieu_naissance" placeholder="Yaoundé" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un lieu de naissance valide sans chiffres">
+            <span class="field-error" id="err-lieu-naissance">Ce champ est obligatoire</span>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Numéro de téléphone <span class="field-required">*</span></label>
+            <input type="tel" id="f-tel" name="tel" placeholder="+237 6XX XXX XXX" required pattern="\+?[0-9 ]{8,20}" title="Entrez un numéro valide, par ex. +237 6XX XXX XXX">
+            <span class="field-error" id="err-tel">Ce champ est obligatoire</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Catégorie de poids <span class="field-required">*</span></label>
+            <select id="f-categorie" name="categorie" required>
+              <option value="">— Sélectionner —</option>
+              <option>-59 kg (Hommes)</option>
+              <option>-66 kg (Hommes)</option>
+              <option>-74 kg (Hommes)</option>
+              <option>-83 kg (Hommes)</option>
+              <option>-93 kg (Hommes)</option>
+              <option>-105 kg (Hommes)</option>
+              <option>+105 kg (Hommes)</option>
+            </select>
+            <span class="field-error" id="err-categorie">Ce champ est obligatoire</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- LOCALISATION -->
+      <div class="form-block">
+        <div class="form-block-title">Région &amp; Lieu de résidence</div>
+        <div class="form-grid">
+          <div class="field-group">
+            <label class="field-label">Région <span class="field-required">*</span></label>
+            <select id="f-region" name="region" required>
+              <option value="">— Sélectionner la région —</option>
+              <option>Adamaoua</option>
+              <option>Centre</option>
+              <option>Est</option>
+              <option>Extrême-Nord</option>
+              <option>Littoral</option>
+              <option>Nord</option>
+              <option>Nord-Ouest</option>
+              <option>Ouest</option>
+              <option>Sud</option>
+              <option>Sud-Ouest</option>
+            </select>
+            <span class="field-error" id="err-region">Ce champ est obligatoire</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Ville / Lieu de résidence <span class="field-required">*</span></label>
+            <input type="text" id="f-ville" name="ville" placeholder="Douala" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez une ville valide sans chiffres">
+            <span class="field-error" id="err-ville">Ce champ est obligatoire</span>
+          </div>
+        </div>
+        <div class="form-grid full">
+          <div class="field-group">
+            <label class="field-label">Club / Salle d'entraînement</label>
+            <input type="text" id="f-club" name="club" placeholder="Nom du club (optionnel)">
+          </div>
+        </div>
+      </div>
+ 
+      <!-- DOSSIER MÉDICAL -->
+      <div class="form-block">
+        <div class="form-block-title">Dossier médical (Optionnel)</div>
+        <p style="font-size:13px; color: var(--light-gray); margin-bottom:20px; line-height:1.6;">
+          Vous pouvez joindre votre certificat médical d'aptitude à la compétition ou tout autre document médical. Le fichier doit être en format <strong style="color:var(--gold)">PDF</strong>, taille maximale : <strong style="color:var(--gold)">5 Mo</strong>.
+        </p>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="f-pdf" name="pdf" accept=".pdf" onchange="handlePdfSelect(this)">
+          <div class="upload-icon">📄</div>
+          <div class="upload-title">Cliquer ou glisser le fichier PDF</div>
+          <div class="upload-hint">Format accepté : PDF — Max 5 Mo</div>
+        </div>
+        <div class="upload-success" id="pdf-success" style="display:none;">
+          ✅ <span id="pdf-filename">fichier.pdf</span> — Prêt à être soumis
+        </div>
+        <span class="field-error" id="err-pdf" style="display:none;">Fichier PDF invalide ou trop volumineux</span>
+      </div>
+ 
+      <!-- CONSENTEMENT -->
+      <div class="form-block">
+        <div class="form-block-title">Consentement &amp; validation</div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="cb-reglement" required>
+          <label class="checkbox-label" for="cb-reglement">
+            Je déclare avoir lu et accepté le règlement du Championnat Régional ELITE CONTINENTALE et m'engage à le respecter.
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="cb-medical" required>
+          <label class="checkbox-label" for="cb-medical">
+            Je certifie que mon dossier médical est valide et que je suis apte à participer à une compétition de powerlifting.
+          </label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="cb-data">
+          <label class="checkbox-label" for="cb-data">
+            J'accepte que mes données personnelles soient utilisées dans le cadre de l'organisation de cette compétition.
+          </label>
+        </div>
+        <span class="field-error" id="err-cb" style="display:none;">Veuillez cocher les cases obligatoires</span>
+      </div>
+ 
+      <div class="submit-zone">
+        <button type="submit" class="btn-submit" id="btn-submit">SOUMETTRE L'INSCRIPTION</button>
+        <p style="font-size:12px; color: var(--light-gray); margin-top:16px;">
+          Champs marqués <span style="color:var(--gold)">*</span> sont obligatoires
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+ 
+<!-- ====================== SUCCESS PAGE ====================== -->
+<div id="page-success" class="page">
+  <div class="success-icon">🏆</div>
+  <div class="success-title">INSCRIPTION ENREGISTRÉE</div>
+  <p class="success-msg">Votre inscription au Championnat Régional ELITE CONTINENTALE a été soumise avec succès. Vous recevrez une confirmation prochainement.</p>
+  <div class="success-ref" id="success-ref">RÉFÉRENCE : EC-XXXXXX</div>
+  <button class="btn-primary" onclick="showPage('home')">RETOUR À L'ACCUEIL</button>
+</div>
+ 
+<!-- ====================== ADMIN PAGE ====================== -->
+<div id="page-admin" class="page">
+  <!-- Login screen -->
+  <div class="admin-login" id="admin-login">
+    <div class="login-box">
+      <div class="login-logo">ELITE CONTINENTALE</div>
+      <div class="login-sub">Espace Administrateur</div>
+      <div class="field-group">
+        <label class="field-label">Identifiant</label>
+        <input type="text" id="admin-user" placeholder="admin" onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Mot de passe</label>
+        <input type="password" id="admin-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button class="btn-login" onclick="doLogin()">CONNEXION</button>
+      <div class="login-err" id="login-err">Identifiant ou mot de passe incorrect</div>
+      <div style="margin-top:24px;">
+        <button class="back-btn" style="justify-content:center; width:100%;" onclick="showPage('home')">Retour à l'accueil</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Dashboard -->
+  <div class="admin-dash" id="admin-dash">
+    <div class="admin-top">
+      <div class="admin-top-logo">ELITE CONTINENTALE — ADMIN</div>
+      <div class="admin-top-right">
+        <span class="admin-user" id="admin-username">admin</span>
+        <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div class="admin-stats-row" id="admin-stats">
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="count-total">0</div>
+          <div class="admin-stat-label">Total inscrits</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="count-pdf">0</div>
+          <div class="admin-stat-label">Dossiers médicaux</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="count-today">0</div>
+          <div class="admin-stat-label">Inscrits aujourd'hui</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="count-regions">0</div>
+          <div class="admin-stat-label">Régions représentées</div>
+        </div>
+      </div>
+ 
+      <div class="admin-section-title">Liste des inscriptions</div>
+ 
+      <div class="admin-toolbar">
+        <input type="text" id="search-input" placeholder="Rechercher par nom, prénom, région…" oninput="filterTable()">
+        <select id="filter-region" onchange="filterTable()">
+          <option value="">Toutes les régions</option>
+          <option>Adamaoua</option><option>Centre</option><option>Est</option>
+          <option>Extrême-Nord</option><option>Littoral</option><option>Nord</option>
+          <option>Nord-Ouest</option><option>Ouest</option><option>Sud</option><option>Sud-Ouest</option>
+        </select>
+        <button class="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
+      </div>
+ 
+      <div class="registrations-table-wrap">
+        <table id="reg-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nom &amp; Prénom</th>
+              <th>Date de naiss.</th>
+              <th>Région</th>
+              <th>Téléphone</th>
+              <th>Catégorie</th>
+              <th>Dossier médical</th>
+              <th>Date d'inscription</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reg-tbody"></tbody>
+        </table>
+        <div class="empty-state" id="empty-state" style="display:none;">
+          <div class="big">📋</div>
+          <p>Aucune inscription pour le moment</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Détails de l'inscription</div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+ 
+<!-- NOTIFICATION -->
+<div class="notif" id="notif"></div>
+ 
+<script>
+// ============================================================
+//  BACKEND CONNECTIVITY
+// ============================================================
+const API_BASE = 'http://localhost:4000/api';
+const ADMIN_CREDS = { user: 'admin', pass: 'ElitePower2024!' };
+const ADMIN_API_TOKEN = 'ElitePower2024!';
+let adminToken = null;
+let pdfFile = null;
+
+// ============================================================
+//  PAGE NAVIGATION
+// ============================================================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'home') updateHomeStats();
+}
+
+function updateHomeStats() {
+  fetch(`${API_BASE}/stats`)
+    .then(async response => {
+      if (!response.ok) throw new Error('Impossible de récupérer les statistiques');
+      return response.json();
+    })
+    .then(data => {
+      document.getElementById('stat-inscrits').textContent = data.total || 0;
+    })
+    .catch(() => {
+      document.getElementById('stat-inscrits').textContent = '—';
+    });
+}
+ 
+// ============================================================
+//  PDF HANDLING
+// ============================================================
+function handlePdfSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.type !== 'application/pdf') { showNotif('Seuls les fichiers PDF sont acceptés.', 'error'); input.value = ''; return; }
+  if (file.size > 5 * 1024 * 1024) { showNotif('Fichier trop volumineux (max 5 Mo).', 'error'); input.value = ''; return; }
+
+  pdfFile = file;
+  document.getElementById('pdf-success').style.display = 'flex';
+  document.getElementById('pdf-filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' Ko)';
+  document.getElementById('err-pdf').style.display = 'none';
+}
+
+// Drag & drop
+const uz = document.getElementById('upload-zone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag-over'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('drag-over'));
+uz.addEventListener('drop', e => {
+  e.preventDefault(); uz.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const inp = document.getElementById('f-pdf');
+    const dt = new DataTransfer(); dt.items.add(file); inp.files = dt.files;
+    handlePdfSelect(inp);
+  }
+});
+
+// ============================================================
+//  FORM VALIDATION & SUBMIT
+// ============================================================
+document.getElementById('reg-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+  submitRegistration();
+});
+ 
+function validateForm() {
+  let ok = true;
+  const regexText = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/;
+  const regexTel = /^\+?[0-9 ]{8,20}$/;
+
+  function setError(el, err, message) {
+    el.classList.add('invalid');
+    err.textContent = message;
+    err.classList.add('show');
+    el.addEventListener('input', () => {
+      el.classList.remove('invalid');
+      err.classList.remove('show');
+      err.textContent = 'Ce champ est obligatoire';
+    }, { once: true });
+  }
+
+  const fields = [
+    { id: 'nom', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un nom valide sans chiffres.' },
+    { id: 'prenom', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un prénom valide sans chiffres.' },
+    { id: 'ddn', required: true },
+    { id: 'lieu-naissance', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un lieu sans chiffres.' },
+    { id: 'tel', required: true, validator: value => regexTel.test(value), invalidMessage: 'Merci de saisir un numéro de téléphone valide.' },
+    { id: 'categorie', required: true },
+    { id: 'region', required: true },
+    { id: 'ville', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir une ville valide sans chiffres.' }
+  ];
+
+  fields.forEach(field => {
+    const el = document.getElementById('f-' + field.id);
+    const err = document.getElementById('err-' + field.id);
+    const value = el.value.trim();
+
+    if (field.required && !value) {
+      setError(el, err, 'Ce champ est obligatoire');
+      ok = false;
+      return;
+    }
+
+    if (field.validator && value && !field.validator(value)) {
+      setError(el, err, field.invalidMessage);
+      ok = false;
+      return;
+    }
+
+    el.classList.remove('invalid');
+    err.classList.remove('show');
+    err.textContent = 'Ce champ est obligatoire';
+  });
+
+  const cb1 = document.getElementById('cb-reglement');
+  const cb2 = document.getElementById('cb-medical');
+  const cbErr = document.getElementById('err-cb');
+  if (!cb1.checked || !cb2.checked) {
+    cbErr.style.display = 'block';
+    ok = false;
+  } else {
+    cbErr.style.display = 'none';
+  }
+
+  document.getElementById('err-pdf').style.display = 'none';
+  return ok;
+}
+
+function submitRegistration() {
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'ENVOI EN COURS…';
+
+  const form = document.getElementById('reg-form');
+  const formData = new FormData(form);
+  if (pdfFile) formData.set('pdf', pdfFile);
+
+  fetch(`${API_BASE}/register`, {
+    method: 'POST',
+    body: formData
+  })
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Erreur lors de l’enregistrement');
+      return data;
+    })
+    .then(data => {
+      document.getElementById('success-ref').textContent = 'RÉFÉRENCE : ' + data.ref;
+      document.getElementById('reg-form').reset();
+      pdfFile = null;
+      document.getElementById('pdf-success').style.display = 'none';
+      showPage('success');
+    })
+    .catch(error => {
+      showNotif(error.message, 'error');
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = 'SOUMETTRE L\'INSCRIPTION';
+    });
+}
+
+// ============================================================
+//  ADMIN AUTH
+// ============================================================
+function doLogin() {
+  const u = document.getElementById('admin-user').value.trim();
+  const p = document.getElementById('admin-pass').value;
+  const err = document.getElementById('login-err');
+  if (u === ADMIN_CREDS.user && p === ADMIN_CREDS.pass) {
+    err.style.display = 'none';
+    adminToken = ADMIN_API_TOKEN;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dash').style.display = 'block';
+    document.getElementById('admin-username').textContent = u;
+    loadDashboard();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('admin-pass').value = '';
+  }
+}
+
+function doLogout() {
+  adminToken = null;
+  document.getElementById('admin-login').style.display = 'flex';
+  document.getElementById('admin-dash').style.display = 'none';
+  document.getElementById('admin-user').value = '';
+  document.getElementById('admin-pass').value = '';
+  showPage('home');
+}
+
+// ============================================================
+//  ADMIN DASHBOARD
+// ============================================================
+let allRegs = [];
+
+function loadDashboard() {
+  fetch(`${API_BASE}/registrations`, {
+    headers: { 'x-admin-token': adminToken }
+  })
+    .then(async response => {
+      if (!response.ok) {
+        const body = await response.json();
+        throw new Error(body.error || 'Impossible de charger les inscriptions');
+      }
+      return response.json();
+    })
+    .then(data => {
+      allRegs = data;
+      updateStats();
+      renderTable(allRegs);
+    })
+    .catch(error => {
+      showNotif(error.message, 'error');
+    });
+}
+
+function updateStats() {
+  const today = new Date().toDateString();
+  const todayCount = allRegs.filter(r => new Date(r.createdAt).toDateString() === today).length;
+  const pdfCount = allRegs.filter(r => r.pdfUrl).length;
+  const regions = new Set(allRegs.map(r => r.region)).size;
+  document.getElementById('count-total').textContent = allRegs.length;
+  document.getElementById('count-pdf').textContent = pdfCount;
+  document.getElementById('count-today').textContent = todayCount;
+  document.getElementById('count-regions').textContent = regions;
+}
+
+function renderTable(regs) {
+  const tbody = document.getElementById('reg-tbody');
+  const empty = document.getElementById('empty-state');
+  tbody.innerHTML = '';
+  if (!regs.length) { empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  regs.forEach((r, i) => {
+    const d = new Date(r.createdAt);
+    const dateStr = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+    const hasPdf = !!r.pdfUrl;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="muted">${i+1}</td>
+      <td><strong>${r.nom}</strong> ${r.prenom}</td>
+      <td class="muted">${r.ddn || '—'}</td>
+      <td>${r.region}</td>
+      <td class="muted">${r.tel}</td>
+      <td>${r.categorie}</td>
+      <td>
+        ${hasPdf
+          ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})">📄 Voir PDF</span>`
+          : `<span class="badge badge-nopdf">Non fourni</span>`}
+      </td>
+      <td class="muted">${dateStr}</td>
+      <td>
+        <button class="btn-view" onclick="viewDetails(${r.id})">Détails</button>
+        <button class="btn-delete" onclick="deleteReg(${r.id})">✕</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterTable() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const region = document.getElementById('filter-region').value;
+  const filtered = allRegs.filter(r => {
+    const text = (r.nom + ' ' + r.prenom + ' ' + r.region + ' ' + r.ville + ' ' + r.tel).toLowerCase();
+    const matchQ = !q || text.includes(q);
+    const matchR = !region || r.region === region;
+    return matchQ && matchR;
+  });
+  renderTable(filtered);
+}
+
+function viewDetails(id) {
+  const r = allRegs.find(x => x.id === id);
+  if (!r) return;
+  const d = new Date(r.createdAt);
+  document.getElementById('modal-title').textContent = r.nom + ' ' + r.prenom;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="detail-row"><span class="detail-key">Référence</span><span class="detail-val" style="color:var(--gold)">${r.ref||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Nom</span><span class="detail-val">${r.nom}</span></div>
+    <div class="detail-row"><span class="detail-key">Prénom</span><span class="detail-val">${r.prenom}</span></div>
+    <div class="detail-row"><span class="detail-key">Date de naissance</span><span class="detail-val">${r.ddn||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Lieu de naissance</span><span class="detail-val">${r.lieuNaissance||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Téléphone</span><span class="detail-val">${r.tel}</span></div>
+    <div class="detail-row"><span class="detail-key">Catégorie</span><span class="detail-val">${r.categorie}</span></div>
+    <div class="detail-row"><span class="detail-key">Région</span><span class="detail-val">${r.region}</span></div>
+    <div class="detail-row"><span class="detail-key">Ville / Résidence</span><span class="detail-val">${r.ville}</span></div>
+    <div class="detail-row"><span class="detail-key">Club</span><span class="detail-val">${r.club||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Dossier médical</span><span class="detail-val">${r.pdfUrl ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})" style="cursor:pointer">📄 ${r.pdfName||'Voir PDF'}</span>` : '<span class="badge badge-nopdf">Non fourni</span>'}</span></div>
+    <div class="detail-row"><span class="detail-key">Date d'inscription</span><span class="detail-val">${d.toLocaleString('fr-FR')}</span></div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function viewPdf(id) {
+  const r = allRegs.find(x => x.id === id);
+  if (!r || !r.pdfUrl) return;
+  window.open(r.pdfUrl, '_blank');
+}
+
+function deleteReg(id) {
+  if (!confirm('Supprimer cette inscription ?')) return;
+  fetch(`${API_BASE}/registrations/${id}`, {
+    method: 'DELETE',
+    headers: { 'x-admin-token': adminToken }
+  })
+    .then(async response => {
+      if (!response.ok) {
+        const body = await response.json();
+        throw new Error(body.error || 'Impossible de supprimer l’inscription');
+      }
+      return response.json();
+    })
+    .then(() => {
+      allRegs = allRegs.filter(r => r.id !== id);
+      updateStats();
+      filterTable();
+      showNotif('Inscription supprimée.', 'success');
+    })
+    .catch(error => {
+      showNotif(error.message, 'error');
+    });
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function exportCSV() {
+  const rows = [['Ref','Nom','Prenom','Date naissance','Lieu naissance','Telephone','Categorie','Region','Ville','Club','PDF','Date inscription']];
+  allRegs.forEach(r => {
+    rows.push([r.ref||'', r.nom, r.prenom, r.ddn, r.lieuNaissance, r.tel, r.categorie, r.region, r.ville, r.club||'', r.pdfUrl?'Oui':'Non', new Date(r.createdAt).toLocaleString('fr-FR')]);
+  });
+  const csv = rows.map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = 'elite_continentale_inscriptions.csv';
+  a.click();
+  showNotif('Export CSV téléchargé.', 'success');
+}
+ 
+// ============================================================
+//  NOTIFICATIONS
+// ============================================================
+function showNotif(msg, type) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.className = 'notif ' + type + ' show';
+  setTimeout(() => n.classList.remove('show'), 3500);
+}
+ 
+// ============================================================
+//  INIT
+// ============================================================
+showPage('home');
+</script>
+</body>
+</html>
+ 

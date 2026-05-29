@@ -37,7 +37,7 @@ const registrationSchema = z.object({
   categorie: z.string().min(1),
   region: z.string().min(1),
   ville: z.string().min(1).regex(/^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/),
-  club: z.string().optional(),
+club: z.string().optional().nullable(),
 });
 
 const upload = multer({
@@ -66,17 +66,16 @@ function requireAdminToken(req, res, next) {
 app.post(`${API_ROOT}/register`, upload.single('pdf'), async (req, res) => {
   try {
     const payload = registrationSchema.parse({
-      nom: req.body.nom,
-      prenom: req.body.prenom,
-      ddn: req.body.ddn,
-      lieuNaissance: req.body.lieu_naissance,
-      tel: req.body.tel,
-      categorie: req.body.categorie,
-      region: req.body.region,
-      ville: req.body.ville,
-      club: req.body.club || null,
-    });
-
+  nom: req.body.nom         || undefined,
+  prenom: req.body.prenom   || undefined,
+  ddn: req.body.ddn         || undefined,
+  lieuNaissance: req.body.lieu_naissance || undefined,
+  tel: req.body.tel         || undefined,
+  categorie: req.body.categorie || undefined,
+  region: req.body.region   || undefined,
+  ville: req.body.ville     || undefined,
+  club: req.body.club       || undefined,
+});
     let pdfPath = null;
     let pdfName = null;
 

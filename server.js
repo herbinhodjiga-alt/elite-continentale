@@ -159,6 +159,15 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route introuvable' });
 });
 
+setInterval(async () => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    console.log('DB ping OK');
+  } catch(e) {
+    console.log('DB ping failed:', e.message);
+  }
+}, 10 * 60 * 1000); // toutes les 10 minutes
+
 app.listen(PORT, () => {
   console.log(`Backend démarré sur http://localhost:${PORT}`);
 });

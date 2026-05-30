@@ -4,46 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ELITE CONTINENTALE — Inscription Championnat</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #C9A84C;
     --gold-light: #E8C96A;
     --gold-dark: #8B6914;
+    --gold-glow: rgba(201,168,76,0.4);
     --black: #0A0A0A;
     --dark: #111111;
     --dark2: #1A1A1A;
     --dark3: #222222;
-    --gray: #444444;
-    --light-gray: #888888;
+    --gray: #555555;
+    --light-gray: #AAAAAA;
     --white: #F5F2EC;
     --red: #C0392B;
     --green: #1E8449;
     --border: rgba(201,168,76,0.2);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; font-size:18px; }
+
   body {
     background: var(--black);
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1.7;
     min-height: 100vh;
+    overflow-x: hidden;
   }
- 
-  /* PAGES */
-  .page { display: none; min-height: 100vh; }
-  .page.active { display: block; }
- 
-  /* ---- HERO / LANDING ---- */
-  #page-home {
-    background: var(--black);
-    display: none;
-    flex-direction: column;
+
+  .page { display:none; min-height:100vh; }
+  .page.active { display:block; }
+  #page-home.active { display:flex; flex-direction:column; }
+  #page-success.active { display:flex; }
+
+  /* ===================== FIRE CANVAS ===================== */
+  #fire-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
   }
-  #page-home.active { display: flex; }
- 
+
+  /* ===================== HERO ===================== */
   .hero-bg {
     position: relative;
     min-height: 100vh;
@@ -53,737 +60,605 @@
     justify-content: center;
     overflow: hidden;
     padding: 40px 20px;
+    z-index: 1;
   }
+
   .hero-bg::before {
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%),
-      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(201,168,76,0.04) 39px, rgba(201,168,76,0.04) 40px),
-      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(201,168,76,0.04) 39px, rgba(201,168,76,0.04) 40px);
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(201,168,76,0.05) 59px, rgba(201,168,76,0.05) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(201,168,76,0.05) 59px, rgba(201,168,76,0.05) 60px);
+    animation: gridPulse 4s ease-in-out infinite;
   }
+
   .hero-bg::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+    animation: haloPulse 3s ease-in-out infinite;
+    pointer-events: none;
   }
+
+  @keyframes gridPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  @keyframes haloPulse {
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6}
+    50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}
+  }
+
+  .hero-top-line {
+    position: absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: lineGlow 2s ease-in-out infinite;
+  }
+  @keyframes lineGlow {
+    0%,100%{opacity:0.5;box-shadow:none}
+    50%{opacity:1;box-shadow:0 0 20px var(--gold-glow)}
+  }
+
   .hero-badge {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-transform: uppercase;
-    border: 1px solid var(--border);
-    padding: 6px 20px;
-    margin-bottom: 30px;
-    position: relative;
-    z-index: 1;
+    font-size: 14px; font-weight: 700; letter-spacing: 5px;
+    color: var(--gold); text-transform: uppercase;
+    border: 1px solid var(--border); padding: 10px 28px;
+    margin-bottom: 32px; position: relative; z-index: 2;
+    animation: fadeInDown 0.8s ease both;
+    backdrop-filter: blur(4px);
+    background: rgba(201,168,76,0.07);
   }
+
   .hero-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(60px, 12vw, 130px);
-    line-height: 0.9;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-    letter-spacing: 2px;
+    font-size: clamp(72px, 13vw, 150px);
+    line-height: 0.88; text-align: center;
+    position: relative; z-index: 2; letter-spacing: 3px;
   }
-  .hero-title span {
+  .hero-title .gold-text {
     display: block;
-    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 45%, var(--gold-dark) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: fadeInUp 0.8s 0.1s ease both;
+    filter: drop-shadow(0 0 30px rgba(201,168,76,0.4));
   }
   .hero-title .white-text {
-    color: var(--white);
-    background: none;
-    -webkit-text-fill-color: var(--white);
+    display: block; color: var(--white);
+    animation: fadeInUp 0.8s 0.2s ease both;
+    text-shadow: 0 0 60px rgba(201,168,76,0.15);
   }
+
   .hero-sub {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(16px, 3vw, 26px);
-    letter-spacing: 6px;
-    color: var(--light-gray);
-    text-transform: uppercase;
-    text-align: center;
-    margin: 20px 0 50px;
-    position: relative;
-    z-index: 1;
+    font-size: clamp(16px, 3vw, 24px);
+    letter-spacing: 7px; color: var(--light-gray);
+    text-transform: uppercase; text-align: center;
+    margin: 28px 0 52px; position: relative; z-index: 2;
+    animation: fadeInUp 0.8s 0.3s ease both;
   }
+
   .hero-divider {
-    width: 100px;
-    height: 1px;
+    width: 120px; height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0 auto 50px;
-    position: relative;
-    z-index: 1;
+    margin: 0 auto 52px; position: relative; z-index: 2;
+    animation: expandWidth 1s 0.4s ease both;
   }
+  @keyframes expandWidth { from{width:0;opacity:0} to{width:120px;opacity:1} }
+
   .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
+    display: flex; gap: 20px; flex-wrap: wrap;
+    justify-content: center; position: relative; z-index: 2;
+    animation: fadeInUp 0.8s 0.5s ease both;
   }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-    color: var(--black);
-    border: none;
-    padding: 16px 40px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--gold);
-    border: 1px solid var(--gold);
-    padding: 16px 40px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-  }
-  .btn-secondary:hover { background: rgba(201,168,76,0.1); transform: translateY(-1px); }
- 
+
   .hero-stats {
-    display: flex;
-    gap: 60px;
-    margin-top: 80px;
-    position: relative;
-    z-index: 1;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex; gap: 70px; margin-top: 80px;
+    position: relative; z-index: 2;
+    flex-wrap: wrap; justify-content: center;
+    animation: fadeInUp 0.8s 0.6s ease both;
   }
   .stat-item { text-align: center; }
   .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: var(--gold);
+    font-family: 'Bebas Neue', sans-serif; font-size: 64px;
     line-height: 1;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(201,168,76,0.4));
   }
   .stat-label {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+    letter-spacing: 3px; color: var(--light-gray); text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .hero-contact {
+    margin-top: 60px; position: relative; z-index: 2;
+    text-align: center; animation: fadeInUp 0.8s 0.7s ease both;
+  }
+  .hero-contact-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--light-gray);
-    text-transform: uppercase;
+    font-size: 13px; letter-spacing: 4px; color: var(--light-gray);
+    text-transform: uppercase; margin-bottom: 14px;
   }
- 
-  /* ---- FORM PAGE ---- */
-  #page-form {
-    background: var(--black);
-    padding: 0;
+  .contact-box {
+    display: inline-flex; flex-direction: column; gap: 10px;
+    background: rgba(201,168,76,0.06);
+    border: 1px solid var(--border); padding: 20px 36px;
+    backdrop-filter: blur(4px);
   }
+  .contact-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase;
+  }
+  .contact-phones { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+  .contact-phone {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px; letter-spacing: 2px; color: var(--white);
+  }
+  .contact-phone a { color: var(--white); text-decoration: none; }
+  .contact-phone a:hover { color: var(--gold); }
+
+  /* ===================== BUTTONS ===================== */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--black); border: none; padding: 20px 50px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
+    font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+    opacity:0; transition:opacity 0.2s;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,168,76,0.4); }
+  .btn-primary:hover::before { opacity:1; }
+
+  .btn-secondary {
+    background: transparent; color: var(--gold);
+    border: 1px solid var(--gold); padding: 20px 50px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 17px;
+    font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .btn-secondary:hover { background:rgba(201,168,76,0.1); transform:translateY(-2px); box-shadow:0 8px 30px rgba(201,168,76,0.2); }
+
+  /* ===================== FORM PAGE ===================== */
+  #page-form { background: var(--black); }
+
   .form-header {
-    background: var(--dark2);
+    background: rgba(26,26,26,0.97);
     border-bottom: 1px solid var(--border);
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
+    padding: 20px 44px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 20px; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(10px);
   }
   .form-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--gold);
-    letter-spacing: 2px;
-    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif; font-size: 30px;
+    color: var(--gold); letter-spacing: 2px; cursor: pointer;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.3));
+    transition: filter 0.2s;
   }
+  .form-logo:hover { filter:drop-shadow(0 0 16px rgba(201,168,76,0.6)); }
   .form-header-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--light-gray);
-    text-transform: uppercase;
+    font-size: 14px; letter-spacing: 5px;
+    color: var(--light-gray); text-transform: uppercase;
   }
- 
-  .form-container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 60px 20px 80px;
+  .back-btn {
+    background:none; border:none; color:var(--light-gray);
+    font-family:'Barlow Condensed',sans-serif; font-size:14px;
+    letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+    display:flex; align-items:center; gap:8px; transition:color 0.2s;
   }
-  .form-section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    letter-spacing: 6px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  .back-btn:hover { color:var(--gold); }
+  .back-btn::before { content:'←'; }
+
+  .api-banner {
+    padding:14px 20px; text-align:center;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:15px; letter-spacing:2px; display:none;
   }
-  .form-section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
+  .api-banner.waking {
+    display:block;
+    background:rgba(201,168,76,0.08);
+    color:var(--gold); border-bottom:1px solid var(--border);
+    animation:pulse 1.5s ease-in-out infinite;
   }
- 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
+  .api-banner.err {
+    display:block;
+    background:rgba(192,57,43,0.1);
+    color:#E74C3C; border-bottom:1px solid rgba(192,57,43,0.3);
   }
-  .form-grid.full { grid-template-columns: 1fr; }
-  @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
- 
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+  .form-container { max-width: 880px; margin: 0 auto; padding: 64px 24px 90px; }
+
+  .form-intro {
+    text-align: center; padding: 52px 0 44px;
+    border-bottom: 1px solid var(--border); margin-bottom: 52px;
+    position: relative;
   }
+  .form-intro::after {
+    content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%);
+    width:60px; height:2px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+  .form-intro h1 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(38px,7vw,68px);
+    background:linear-gradient(135deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    letter-spacing:3px; margin-bottom:12px;
+  }
+  .form-intro p {
+    font-size:15px; color:var(--light-gray);
+    font-family:'Barlow Condensed',sans-serif; letter-spacing:4px;
+    text-transform:uppercase;
+  }
+
+  .form-block {
+    background: var(--dark2); border: 1px solid var(--border);
+    padding: 36px; margin-bottom: 22px;
+    transition: border-color 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .form-block::before {
+    content:''; position:absolute;
+    top:0; left:0; width:3px; height:100%;
+    background:linear-gradient(180deg,var(--gold),transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .form-block:focus-within { border-color:rgba(201,168,76,0.4); }
+  .form-block:focus-within::before { opacity:1; }
+
+  .form-block-title {
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:13px; font-weight:800; letter-spacing:5px;
+    color:var(--gold); text-transform:uppercase;
+    margin-bottom:28px; padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:10px;
+  }
+  .form-block-title::before {
+    content:''; width:7px; height:7px;
+    background:var(--gold);
+    clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+    flex-shrink:0;
+    animation:diamondSpin 3s linear infinite;
+  }
+  @keyframes diamondSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  .form-grid.full { grid-template-columns:1fr; }
+  @media(max-width:600px){ .form-grid{grid-template-columns:1fr} }
+
+  .field-group { display:flex; flex-direction:column; gap:8px; }
   .field-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--light-gray);
-    text-transform: uppercase;
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:13px; font-weight:700; letter-spacing:3px;
+    color:var(--light-gray); text-transform:uppercase;
+    transition:color 0.2s;
   }
-  .field-required { color: var(--gold); margin-left: 2px; }
- 
-  input[type="text"],
-  input[type="tel"],
-  input[type="date"],
-  select,
-  textarea {
-    background: var(--dark2);
+  .field-group:focus-within .field-label { color:var(--gold); }
+  .field-required { color:var(--gold); margin-left:3px; }
+  .field-error { color:#E74C3C; font-size:14px; margin-top:4px; display:none; }
+  .field-error.show { display:block; }
+
+  input[type="text"], input[type="tel"], input[type="date"], select, textarea {
+    background: rgba(26,26,26,0.9);
     border: 1px solid rgba(201,168,76,0.15);
-    color: var(--white);
-    padding: 13px 16px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 17px;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-    border-radius: 0;
-    width: 100%;
+    color: var(--white); padding: 15px 18px;
+    font-family: 'Barlow', sans-serif; font-size: 17px;
+    outline: none; transition: all 0.2s;
+    -webkit-appearance: none; border-radius: 0; width: 100%;
   }
   input:focus, select:focus, textarea:focus {
     border-color: var(--gold);
     background: var(--dark3);
+    box-shadow: 0 0 0 1px rgba(201,168,76,0.1), inset 0 0 20px rgba(201,168,76,0.03);
   }
   input::placeholder, textarea::placeholder { color: var(--gray); }
   select option { background: var(--dark2); color: var(--white); }
- 
-  /* PDF Upload Zone */
+  input.invalid, select.invalid { border-color: #E74C3C; }
+
   .upload-zone {
-    border: 1px dashed rgba(201,168,76,0.3);
-    background: var(--dark2);
-    padding: 40px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    margin-bottom: 16px;
+    border:1px dashed rgba(201,168,76,0.3); background:rgba(26,26,26,0.6);
+    padding:48px 24px; text-align:center; cursor:pointer;
+    transition:all 0.3s; position:relative; margin-bottom:18px;
   }
-  .upload-zone:hover { border-color: var(--gold); background: var(--dark3); }
-  .upload-zone.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.05); }
-  .upload-zone input[type="file"] {
-    position: absolute; inset: 0; opacity: 0; cursor: pointer;
-    width: 100%; height: 100%; padding: 0; border: none;
-  }
-  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-zone:hover { border-color:var(--gold); background:rgba(201,168,76,0.04); box-shadow:inset 0 0 30px rgba(201,168,76,0.05); }
+  .upload-zone.drag-over { border-color:var(--gold); background:rgba(201,168,76,0.07); box-shadow:0 0 20px rgba(201,168,76,0.2); }
+  .upload-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; padding:0; border:none; }
+  .upload-icon { font-size:52px; margin-bottom:14px; animation:floatIcon 3s ease-in-out infinite; }
+  @keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
   .upload-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 6px;
+    font-family:'Barlow Condensed',sans-serif; font-size:18px;
+    font-weight:700; letter-spacing:3px; color:var(--gold);
+    text-transform:uppercase; margin-bottom:8px;
   }
-  .upload-hint { font-size: 15px; color: var(--light-gray); }
+  .upload-hint { font-size:15px; color:var(--light-gray); }
   .upload-success {
-    background: rgba(30,132,73,0.15);
-    border: 1px solid rgba(30,132,73,0.4);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-    color: #4CAF50;
-    margin-top: 10px;
+    background:rgba(30,132,73,0.12); border:1px solid rgba(30,132,73,0.35);
+    padding:14px 22px; display:none; align-items:center;
+    gap:12px; font-size:16px; color:#4CAF50; margin-top:12px;
   }
- 
-  .form-block {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    padding: 32px;
-    margin-bottom: 32px;
-  }
-  .form-block-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-  }
- 
-  .submit-zone {
-    text-align: center;
-    padding: 40px 0 0;
-  }
+
+  .checkbox-group { display:flex; align-items:flex-start; gap:14px; margin-bottom:18px; }
+  .checkbox-group input[type="checkbox"] { width:20px; height:20px; flex-shrink:0; margin-top:3px; accent-color:var(--gold); cursor:pointer; padding:0; }
+  .checkbox-label { font-size:16px; color:var(--light-gray); line-height:1.6; cursor:pointer; }
+
+  .submit-zone { text-align:center; padding:44px 0 0; }
   .btn-submit {
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-    color: var(--black);
-    border: none;
-    padding: 20px 80px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);
+    color:var(--black); border:none; padding:22px 90px;
+    font-family:'Bebas Neue',sans-serif; font-size:28px;
+    letter-spacing:5px; cursor:pointer; transition:all 0.25s;
+    clip-path:polygon(14px 0%,100% 0%,calc(100% - 14px) 100%,0% 100%);
+    position:relative; overflow:hidden;
   }
-  .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
-  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
- 
-  /* Terms checkbox */
-  .checkbox-group {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 20px;
+  .btn-submit::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+    transform:translateX(-100%); transition:transform 0.5s;
   }
-  .checkbox-group input[type="checkbox"] {
-    width: 18px; height: 18px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    accent-color: var(--gold);
-    cursor: pointer;
-    padding: 0;
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 10px 40px rgba(201,168,76,0.5); }
+  .btn-submit:hover::after { transform:translateX(100%); }
+  .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .spinner {
+    display:inline-block; width:18px; height:18px;
+    border:2px solid rgba(0,0,0,0.3); border-top-color:#000;
+    border-radius:50%; animation:spin 0.7s linear infinite;
+    margin-right:10px; vertical-align:middle;
   }
-  .checkbox-label { font-size: 15px; color: var(--light-gray); line-height: 1.5; cursor: pointer; }
- 
-  /* Notification */
-  .notif {
-    position: fixed;
-    top: 20px; right: 20px;
-    padding: 16px 24px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    letter-spacing: 1px;
-    z-index: 9999;
-    max-width: 360px;
-    transform: translateX(120%);
-    transition: transform 0.3s;
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  /* ===================== SUCCESS ===================== */
+  #page-success {
+    min-height:100vh; align-items:center; justify-content:center;
+    flex-direction:column; text-align:center; padding:40px 20px;
+    background:var(--black); position:relative; z-index:1;
   }
-  .notif.show { transform: translateX(0); }
-  .notif.success { background: #1A3A25; border-left: 3px solid var(--green); color: #4CAF50; }
-  .notif.error { background: #3A1A1A; border-left: 3px solid var(--red); color: #E74C3C; }
- 
-  /* ---- ADMIN PAGE ---- */
-  #page-admin { background: var(--black); }
-  .admin-login {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+  .success-icon { font-size:100px; margin-bottom:28px; animation:successPop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both; }
+  @keyframes successPop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+  .success-title {
+    font-family:'Bebas Neue',sans-serif; font-size:64px;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    letter-spacing:4px; margin-bottom:16px;
+    animation:fadeInUp 0.6s 0.3s ease both;
   }
+  .success-msg {
+    font-size:18px; color:var(--light-gray);
+    max-width:520px; margin-bottom:44px;
+    animation:fadeInUp 0.6s 0.4s ease both;
+  }
+  .success-ref {
+    background:rgba(201,168,76,0.07); border:1px solid var(--border);
+    padding:18px 44px; font-family:'Barlow Condensed',sans-serif;
+    font-size:17px; letter-spacing:4px; color:var(--gold);
+    text-transform:uppercase; margin-bottom:44px;
+    animation:fadeInUp 0.6s 0.5s ease both;
+    box-shadow:0 0 20px rgba(201,168,76,0.1);
+  }
+
+  /* ===================== ADMIN ===================== */
+  #page-admin { background:var(--black); position:relative; z-index:1; }
+
+  .admin-login { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
   .login-box {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    padding: 48px 40px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
+    background:var(--dark2); border:1px solid var(--border);
+    padding:52px 44px; max-width:440px; width:100%; text-align:center;
+    position:relative; overflow:hidden;
   }
+  .login-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
   .login-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--gold);
-    letter-spacing: 3px;
-    margin-bottom: 8px;
+    font-family:'Bebas Neue',sans-serif; font-size:42px;
+    background:linear-gradient(135deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    letter-spacing:3px; margin-bottom:6px;
   }
   .login-sub {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--light-gray);
-    text-transform: uppercase;
-    margin-bottom: 40px;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:5px; color:var(--light-gray);
+    text-transform:uppercase; margin-bottom:44px;
   }
-  .login-box .field-group { text-align: left; margin-bottom: 16px; }
+  .login-box .field-group { text-align:left; margin-bottom:18px; }
   .btn-login {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-    color: var(--black);
-    border: none;
-    padding: 16px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 4px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-top: 8px;
+    width:100%;
+    background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);
+    color:var(--black); border:none; padding:18px;
+    font-family:'Bebas Neue',sans-serif; font-size:24px;
+    letter-spacing:4px; cursor:pointer; transition:all 0.2s; margin-top:10px;
   }
-  .btn-login:hover { opacity: 0.9; }
-  .login-err { color: var(--red); font-size: 13px; margin-top: 12px; display: none; }
- 
-  /* Admin dashboard */
-  .admin-dash { display: none; }
+  .btn-login:hover { opacity:0.9; box-shadow:0 6px 24px rgba(201,168,76,0.4); }
+  .login-err { color:#E74C3C; font-size:15px; margin-top:14px; display:none; }
+
+  .admin-dash { display:none; }
   .admin-top {
-    background: var(--dark2);
-    border-bottom: 1px solid var(--border);
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
+    background:rgba(26,26,26,0.97); border-bottom:1px solid var(--border);
+    padding:18px 36px; display:flex; align-items:center;
+    justify-content:space-between; flex-wrap:wrap; gap:14px;
+    position:sticky; top:0; z-index:100; backdrop-filter:blur(10px);
   }
   .admin-top-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    color: var(--gold);
-    letter-spacing: 2px;
+    font-family:'Bebas Neue',sans-serif; font-size:26px;
+    color:var(--gold); letter-spacing:2px;
+    filter:drop-shadow(0 0 8px rgba(201,168,76,0.3));
   }
-  .admin-top-right { display: flex; align-items: center; gap: 16px; }
-  .admin-user { font-size: 13px; color: var(--light-gray); }
+  .admin-top-right { display:flex; align-items:center; gap:18px; }
+  .admin-user { font-size:15px; color:var(--light-gray); font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; }
   .btn-logout {
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold);
-    padding: 8px 20px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
+    background:transparent; border:1px solid rgba(201,168,76,0.25);
+    color:var(--gold); padding:10px 22px;
+    font-family:'Barlow Condensed',sans-serif; font-size:14px;
+    letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.2s;
   }
-  .btn-logout:hover { background: rgba(201,168,76,0.1); }
- 
-  .admin-content { padding: 32px; }
-  .admin-stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
+  .btn-logout:hover { background:rgba(201,168,76,0.08); border-color:var(--gold); }
+
+  .admin-content { padding:36px; }
+
+  .admin-stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-bottom:44px; }
   .admin-stat {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    padding: 24px;
-    text-align: center;
+    background:var(--dark2); border:1px solid var(--border);
+    padding:32px 26px; text-align:center;
+    transition:border-color 0.3s,box-shadow 0.3s;
+    position:relative; overflow:hidden;
   }
+  .admin-stat::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:0; transition:opacity 0.3s; }
+  .admin-stat:hover { border-color:rgba(201,168,76,0.4); box-shadow:0 4px 20px rgba(201,168,76,0.1); }
+  .admin-stat:hover::before { opacity:1; }
   .admin-stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
-    color: var(--gold);
-    line-height: 1;
+    font-family:'Bebas Neue',sans-serif; font-size:64px; line-height:1;
+    background:linear-gradient(180deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
   .admin-stat-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--light-gray);
-    text-transform: uppercase;
-    margin-top: 4px;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:3px; color:var(--light-gray); text-transform:uppercase; margin-top:8px;
   }
- 
+
   .admin-section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    letter-spacing: 5px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    font-family:'Bebas Neue',sans-serif; font-size:14px;
+    letter-spacing:6px; color:var(--gold); text-transform:uppercase;
+    margin-bottom:22px; display:flex; align-items:center; gap:18px;
   }
-  .admin-section-title::after { content:''; flex:1; height:1px; background: var(--border); }
- 
-  .admin-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+  .admin-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .admin-toolbar { display:flex; align-items:center; gap:14px; margin-bottom:18px; flex-wrap:wrap; }
+  .admin-toolbar input { max-width:300px; padding:12px 18px; font-size:16px; }
+  .admin-toolbar select { max-width:240px; padding:12px 18px; font-size:16px; }
+  .btn-export {
+    background:var(--dark3); border:1px solid var(--border);
+    color:var(--gold); padding:12px 22px;
+    font-family:'Barlow Condensed',sans-serif; font-size:14px;
+    letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+    transition:all 0.2s; margin-left:auto;
   }
-  .admin-toolbar input {
-    max-width: 280px;
-    padding: 10px 16px;
-    font-size: 15px;
+  .btn-export:hover { background:rgba(201,168,76,0.1); border-color:var(--gold); }
+  .btn-refresh {
+    background:var(--dark3); border:1px solid var(--border);
+    color:var(--light-gray); padding:12px 18px;
+    font-family:'Barlow Condensed',sans-serif; font-size:14px;
+    letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.2s;
   }
-  .admin-toolbar select { max-width: 200px; padding: 10px 16px; font-size: 15px; }
- 
-  .registrations-table-wrap { overflow-x: auto; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15px;
-  }
-  thead tr {
-    background: var(--dark3);
-    border-bottom: 1px solid var(--border);
-  }
+  .btn-refresh:hover { color:var(--gold); border-color:var(--gold); }
+
+  .registrations-table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  thead tr { background:var(--dark3); border-bottom:1px solid var(--border); }
   th {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    text-transform: uppercase;
-    padding: 14px 16px;
-    text-align: left;
-    white-space: nowrap;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:2px; color:var(--gold); text-transform:uppercase;
+    padding:16px 18px; text-align:left; white-space:nowrap;
   }
-  tbody tr {
-    border-bottom: 1px solid rgba(201,168,76,0.07);
-    transition: background 0.15s;
-  }
-  tbody tr:hover { background: var(--dark2); }
-  td { padding: 12px 16px; color: var(--white); vertical-align: middle; }
-  td.muted { color: var(--light-gray); }
- 
+  tbody tr { border-bottom:1px solid rgba(201,168,76,0.06); transition:background 0.15s; }
+  tbody tr:hover { background:rgba(201,168,76,0.04); }
+  td { padding:14px 18px; color:var(--white); vertical-align:middle; }
+  td.muted { color:var(--light-gray); }
+
   .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-weight: 600;
+    display:inline-block; padding:4px 12px;
+    font-family:'Barlow Condensed',sans-serif; font-size:12px;
+    letter-spacing:1px; text-transform:uppercase; font-weight:700;
   }
-  .badge-new { background: rgba(201,168,76,0.15); color: var(--gold); }
-  .badge-pdf { background: rgba(30,132,73,0.15); color: #4CAF50; cursor: pointer; }
-  .badge-nopdf { background: rgba(68,68,68,0.3); color: var(--light-gray); }
- 
+  .badge-pdf { background:rgba(30,132,73,0.15); color:#4CAF50; cursor:pointer; transition:background 0.2s; }
+  .badge-pdf:hover { background:rgba(30,132,73,0.25); }
+  .badge-nopdf { background:rgba(68,68,68,0.3); color:var(--light-gray); }
+
   .btn-view {
-    background: transparent;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold);
-    padding: 6px 14px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
+    background:transparent; border:1px solid rgba(201,168,76,0.25);
+    color:var(--gold); padding:8px 16px;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.2s;
   }
-  .btn-view:hover { background: rgba(201,168,76,0.1); }
+  .btn-view:hover { background:rgba(201,168,76,0.1); border-color:var(--gold); }
   .btn-delete {
-    background: transparent;
-    border: 1px solid rgba(192,57,43,0.3);
-    color: #E74C3C;
-    padding: 6px 12px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-left: 6px;
+    background:transparent; border:1px solid rgba(192,57,43,0.25);
+    color:#E74C3C; padding:8px 14px;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:1px; text-transform:uppercase; cursor:pointer;
+    transition:all 0.2s; margin-left:6px;
   }
-  .btn-delete:hover { background: rgba(192,57,43,0.1); }
- 
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--light-gray);
-  }
-  .empty-state .big { font-size: 60px; margin-bottom: 16px; }
-  .empty-state p { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 2px; font-size: 14px; }
- 
-  /* Modal */
+  .btn-delete:hover { background:rgba(192,57,43,0.1); border-color:#E74C3C; }
+
+  .empty-state { text-align:center; padding:70px 20px; color:var(--light-gray); }
+  .empty-state .big { font-size:70px; margin-bottom:18px; }
+  .empty-state p { font-family:'Barlow Condensed',sans-serif; letter-spacing:2px; font-size:16px; }
+
   .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    position:fixed; inset:0; background:rgba(0,0,0,0.90);
+    z-index:1000; display:none; align-items:center;
+    justify-content:center; padding:20px; backdrop-filter:blur(4px);
   }
-  .modal-overlay.open { display: flex; }
+  .modal-overlay.open { display:flex; }
   .modal {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    max-width: 600px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
+    background:var(--dark2); border:1px solid var(--border);
+    max-width:640px; width:100%; max-height:90vh;
+    overflow-y:auto; position:relative;
   }
+  .modal::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
   .modal-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    padding:24px 28px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
   }
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 3px;
-    color: var(--gold);
-  }
-  .modal-close {
-    background: none; border: none; color: var(--light-gray);
-    font-size: 22px; cursor: pointer; line-height: 1;
-  }
-  .modal-body { padding: 24px; }
+  .modal-title { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:3px; color:var(--gold); }
+  .modal-close { background:none; border:none; color:var(--light-gray); font-size:26px; cursor:pointer; line-height:1; transition:color 0.2s; }
+  .modal-close:hover { color:var(--gold); }
+  .modal-body { padding:26px; }
   .detail-row {
-    display: flex;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(201,168,76,0.07);
-    font-size: 14px;
+    display:flex; gap:18px; padding:13px 0;
+    border-bottom:1px solid rgba(201,168,76,0.06); font-size:16px;
   }
   .detail-key {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: var(--light-gray);
-    text-transform: uppercase;
-    min-width: 140px;
-    flex-shrink: 0;
+    font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    letter-spacing:2px; color:var(--light-gray);
+    text-transform:uppercase; min-width:160px; flex-shrink:0; padding-top:2px;
   }
-  .detail-val { color: var(--white); }
- 
-  /* Success page */
-  #page-success {
-    display: none;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 40px 20px;
-    background: var(--black);
+  .detail-val { color:var(--white); }
+
+  .notif {
+    position:fixed; top:22px; right:22px;
+    padding:18px 26px; font-family:'Barlow Condensed',sans-serif;
+    font-size:15px; letter-spacing:1px; z-index:9999;
+    max-width:400px; transform:translateX(120%);
+    transition:transform 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
   }
-  #page-success.active { display: flex; }
-  .success-icon { font-size: 80px; margin-bottom: 24px; }
-  .success-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 52px;
-    color: var(--gold);
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-  }
-  .success-msg { font-size: 16px; color: var(--light-gray); max-width: 480px; margin-bottom: 40px; }
-  .success-ref {
-    background: var(--dark2);
-    border: 1px solid var(--border);
-    padding: 16px 32px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 40px;
-  }
- 
-  /* Back button */
-  .back-btn {
-    background: none;
-    border: none;
-    color: var(--light-gray);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: color 0.2s;
-  }
-  .back-btn:hover { color: var(--gold); }
-  .back-btn::before { content: '←'; }
- 
-  .form-intro {
-    text-align: center;
-    padding: 50px 0 40px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 48px;
-  }
-  .form-intro h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(32px, 6vw, 56px);
-    color: var(--gold);
-    letter-spacing: 3px;
-    margin-bottom: 8px;
-  }
-  .form-intro p {
-    font-size: 14px;
-    color: var(--light-gray);
-    font-family: 'Barlow Condensed', sans-serif;
-    letter-spacing: 2px;
-  }
- 
-  .counter-badge {
-    display: inline-block;
-    background: rgba(201,168,76,0.15);
-    color: var(--gold);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 3px 10px;
-    margin-left: 10px;
-  }
- 
-  /* Export btn */
-  .btn-export {
-    background: var(--dark3);
-    border: 1px solid var(--border);
-    color: var(--gold);
-    padding: 10px 20px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-left: auto;
-  }
-  .btn-export:hover { background: rgba(201,168,76,0.1); }
- 
-  .field-error { color: #E74C3C; font-size: 12px; margin-top: 4px; display: none; }
-  .field-error.show { display: block; }
-  input.invalid, select.invalid { border-color: #E74C3C; }
+  .notif.show { transform:translateX(0); }
+  .notif.success { background:#122518; border-left:3px solid var(--green); color:#4CAF50; box-shadow:0 4px 20px rgba(30,132,73,0.2); }
+  .notif.error { background:#251212; border-left:3px solid var(--red); color:#E74C3C; box-shadow:0 4px 20px rgba(192,57,43,0.2); }
+  .notif.info { background:#1a1a0f; border-left:3px solid var(--gold); color:var(--gold); }
+
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
- 
-<!-- ====================== HOME PAGE ====================== -->
+
+<!-- CANVAS FLAMMES DORÉES -->
+<canvas id="fire-canvas"></canvas>
+
+<!-- =================== HOME =================== -->
 <div id="page-home" class="page">
   <div class="hero-bg">
-    <div class="hero-badge">Fédération Africaine de Powerlifting</div>
+    <div class="hero-top-line"></div>
+    <div class="hero-badge">⚡ ULTRAFIT CAMEROUN "Dépasse tes limites." ⚡</div>
     <h1 class="hero-title">
-      <span>ELITE</span>
+      <span class="gold-text">ELITE</span>
       <span class="white-text">CONTINENTALE</span>
     </h1>
     <p class="hero-sub">Championnat Régional de Powerlifting</p>
     <div class="hero-divider"></div>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="showPage('form')">INSCRIPTION EN LIGNE</button>
+      <button class="btn-primary" onclick="showPage('form')">🏋️ INSCRIPTION EN LIGNE</button>
       <button class="btn-secondary" onclick="showPage('admin')">ESPACE ADMIN</button>
     </div>
     <div class="hero-stats">
@@ -792,7 +667,7 @@
         <div class="stat-label">Inscrits</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">3</div>
+        <div class="stat-num">14</div>
         <div class="stat-label">Catégories</div>
       </div>
       <div class="stat-item">
@@ -800,35 +675,47 @@
         <div class="stat-label">Régions</div>
       </div>
     </div>
+    <div class="hero-contact">
+      <div class="hero-contact-label">Pour plus d'informations</div>
+      <div class="contact-box">
+        <div class="contact-name">DJARSIA MOUSSA</div>
+        <div class="contact-phones">
+          <div class="contact-phone">📞 <a href="tel:+237658276237">658 276 237</a></div>
+          <div class="contact-phone">📞 <a href="tel:+237650489355">650 489 355</a></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
- 
-<!-- ====================== FORM PAGE ====================== -->
+
+<!-- =================== FORM =================== -->
 <div id="page-form" class="page">
   <div class="form-header">
     <div class="form-logo" onclick="showPage('home')">ELITE CONTINENTALE</div>
     <div class="form-header-title">Formulaire d'inscription</div>
     <button class="back-btn" onclick="showPage('home')">Retour</button>
   </div>
+  <div id="api-banner" class="api-banner">
+    ⏳ CONNEXION AU SERVEUR EN COURS — MERCI DE PATIENTER QUELQUES SECONDES…
+  </div>
   <div class="form-container">
     <div class="form-intro">
       <h1>FORMULAIRE D'INSCRIPTION</h1>
-      <p>CHAMPIONNAT RÉGIONAL DE POWERLIFTING — ELITE CONTINENTALE</p>
+      <p>Championnat Régional de Powerlifting — Elite Continentale</p>
     </div>
- 
-    <form id="reg-form">
+    <form id="reg-form" novalidate>
       <!-- IDENTITÉ -->
       <div class="form-block">
         <div class="form-block-title">Informations personnelles</div>
         <div class="form-grid">
           <div class="field-group">
             <label class="field-label">Nom <span class="field-required">*</span></label>
-            <input type="text" id="f-nom" name="nom" placeholder="DUPONT" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un nom valide sans chiffres">
+            <input type="text" id="f-nom" name="nom" placeholder="DUPONT" required>
             <span class="field-error" id="err-nom">Ce champ est obligatoire</span>
           </div>
           <div class="field-group">
             <label class="field-label">Prénom <span class="field-required">*</span></label>
-            <input type="text" id="f-prenom" name="prenom" placeholder="Jean" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un prénom valide sans chiffres">
+            <input type="text" id="f-prenom" name="prenom" placeholder="Jean" required>
             <span class="field-error" id="err-prenom">Ce champ est obligatoire</span>
           </div>
         </div>
@@ -840,33 +727,33 @@
           </div>
           <div class="field-group">
             <label class="field-label">Lieu de naissance <span class="field-required">*</span></label>
-            <input type="text" id="f-lieu-naissance" name="lieu_naissance" placeholder="Yaoundé" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez un lieu de naissance valide sans chiffres">
+            <input type="text" id="f-lieu-naissance" name="lieu_naissance" placeholder="Yaoundé" required>
             <span class="field-error" id="err-lieu-naissance">Ce champ est obligatoire</span>
           </div>
         </div>
         <div class="form-grid">
           <div class="field-group">
             <label class="field-label">Numéro de téléphone <span class="field-required">*</span></label>
-            <input type="tel" id="f-tel" name="tel" placeholder="+237 6XX XXX XXX" required pattern="\+?[0-9 ]{8,20}" title="Entrez un numéro valide, par ex. +237 6XX XXX XXX">
+            <input type="tel" id="f-tel" name="tel" placeholder="+237 6XX XXX XXX" required>
             <span class="field-error" id="err-tel">Ce champ est obligatoire</span>
           </div>
           <div class="field-group">
             <label class="field-label">Catégorie de poids <span class="field-required">*</span></label>
             <select id="f-categorie" name="categorie" required>
               <option value="">— Sélectionner —</option>
-              <option>-59 kg (Hommes)</option>
-              <option>-66 kg (Hommes)</option>
-              <option>-74 kg (Hommes)</option>
-              <option>-83 kg (Hommes)</option>
-              <option>-93 kg (Hommes)</option>
-              <option>-105 kg (Hommes)</option>
+              <option>-59 kg (Hommes)</option><option>-66 kg (Hommes)</option>
+              <option>-74 kg (Hommes)</option><option>-83 kg (Hommes)</option>
+              <option>-93 kg (Hommes)</option><option>-105 kg (Hommes)</option>
               <option>+105 kg (Hommes)</option>
+              <option>-47 kg (Femmes)</option><option>-52 kg (Femmes)</option>
+              <option>-57 kg (Femmes)</option><option>-63 kg (Femmes)</option>
+              <option>-72 kg (Femmes)</option><option>-84 kg (Femmes)</option>
+              <option>+84 kg (Femmes)</option>
             </select>
             <span class="field-error" id="err-categorie">Ce champ est obligatoire</span>
           </div>
         </div>
       </div>
- 
       <!-- LOCALISATION -->
       <div class="form-block">
         <div class="form-block-title">Région &amp; Lieu de résidence</div>
@@ -875,22 +762,16 @@
             <label class="field-label">Région <span class="field-required">*</span></label>
             <select id="f-region" name="region" required>
               <option value="">— Sélectionner la région —</option>
-              <option>Adamaoua</option>
-              <option>Centre</option>
-              <option>Est</option>
-              <option>Extrême-Nord</option>
-              <option>Littoral</option>
-              <option>Nord</option>
-              <option>Nord-Ouest</option>
-              <option>Ouest</option>
-              <option>Sud</option>
+              <option>Adamaoua</option><option>Centre</option><option>Est</option>
+              <option>Extreme-Nord</option><option>Littoral</option><option>Nord</option>
+              <option>Nord-Ouest</option><option>Ouest</option><option>Sud</option>
               <option>Sud-Ouest</option>
             </select>
             <span class="field-error" id="err-region">Ce champ est obligatoire</span>
           </div>
           <div class="field-group">
             <label class="field-label">Ville / Lieu de résidence <span class="field-required">*</span></label>
-            <input type="text" id="f-ville" name="ville" placeholder="Douala" required pattern="[A-Za-zÀ-ÖØ-öø-ÿ' -]+" title="Entrez une ville valide sans chiffres">
+            <input type="text" id="f-ville" name="ville" placeholder="Douala" required>
             <span class="field-error" id="err-ville">Ce champ est obligatoire</span>
           </div>
         </div>
@@ -901,146 +782,124 @@
           </div>
         </div>
       </div>
- 
-      <!-- DOSSIER MÉDICAL -->
+      <!-- PDF -->
       <div class="form-block">
-        <div class="form-block-title">Dossier médical (Optionnel)</div>
-        <p style="font-size:13px; color: var(--light-gray); margin-bottom:20px; line-height:1.6;">
-          Vous pouvez joindre votre certificat médical d'aptitude à la compétition ou tout autre document médical. Le fichier doit être en format <strong style="color:var(--gold)">PDF</strong>, taille maximale : <strong style="color:var(--gold)">5 Mo</strong>.
+        <div class="form-block-title">Dossier médical (PDF — optionnel)</div>
+        <p style="font-size:16px;color:var(--light-gray);margin-bottom:22px;line-height:1.8;">
+          Vous pouvez joindre votre certificat médical d'aptitude à la compétition si vous l'avez déjà.
+          Format <strong style="color:var(--gold)">PDF</strong> uniquement — taille maximale : <strong style="color:var(--gold)">5 Mo</strong>.
         </p>
         <div class="upload-zone" id="upload-zone">
           <input type="file" id="f-pdf" name="pdf" accept=".pdf" onchange="handlePdfSelect(this)">
           <div class="upload-icon">📄</div>
-          <div class="upload-title">Cliquer ou glisser le fichier PDF</div>
+          <div class="upload-title">Cliquer ou glisser le fichier PDF ici</div>
           <div class="upload-hint">Format accepté : PDF — Max 5 Mo</div>
         </div>
-        <div class="upload-success" id="pdf-success" style="display:none;">
-          ✅ <span id="pdf-filename">fichier.pdf</span> — Prêt à être soumis
+        <div class="upload-success" id="pdf-success">
+          ✅ &nbsp;<span id="pdf-filename"></span>
         </div>
-        <span class="field-error" id="err-pdf" style="display:none;">Fichier PDF invalide ou trop volumineux</span>
+        <span class="field-error" id="err-pdf">Veuillez joindre votre dossier médical en PDF</span>
       </div>
- 
       <!-- CONSENTEMENT -->
       <div class="form-block">
         <div class="form-block-title">Consentement &amp; validation</div>
         <div class="checkbox-group">
-          <input type="checkbox" id="cb-reglement" required>
+          <input type="checkbox" id="cb-reglement">
           <label class="checkbox-label" for="cb-reglement">
             Je déclare avoir lu et accepté le règlement du Championnat Régional ELITE CONTINENTALE et m'engage à le respecter.
           </label>
         </div>
         <div class="checkbox-group">
-          <input type="checkbox" id="cb-medical" required>
+          <input type="checkbox" id="cb-medical">
           <label class="checkbox-label" for="cb-medical">
-            Je certifie que mon dossier médical est valide et que je suis apte à participer à une compétition de powerlifting.
+            Je certifie être apte médicalement à participer à une compétition de powerlifting.
           </label>
         </div>
         <div class="checkbox-group">
           <input type="checkbox" id="cb-data">
           <label class="checkbox-label" for="cb-data">
-            J'accepte que mes données personnelles soient utilisées dans le cadre de l'organisation de cette compétition.
+            J'accepte que mes données personnelles soient utilisées dans le cadre de cette compétition.
           </label>
         </div>
-        <span class="field-error" id="err-cb" style="display:none;">Veuillez cocher les cases obligatoires</span>
+        <span class="field-error" id="err-cb">Veuillez cocher les cases obligatoires</span>
       </div>
- 
       <div class="submit-zone">
         <button type="submit" class="btn-submit" id="btn-submit">SOUMETTRE L'INSCRIPTION</button>
-        <p style="font-size:12px; color: var(--light-gray); margin-top:16px;">
+        <p style="font-size:15px;color:var(--light-gray);margin-top:18px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">
           Champs marqués <span style="color:var(--gold)">*</span> sont obligatoires
         </p>
       </div>
     </form>
   </div>
 </div>
- 
-<!-- ====================== SUCCESS PAGE ====================== -->
+
+<!-- =================== SUCCESS =================== -->
 <div id="page-success" class="page">
   <div class="success-icon">🏆</div>
-  <div class="success-title">INSCRIPTION ENREGISTRÉE</div>
-  <p class="success-msg">Votre inscription au Championnat Régional ELITE CONTINENTALE a été soumise avec succès. Vous recevrez une confirmation prochainement.</p>
+  <div class="success-title">INSCRIPTION ENREGISTRÉE !</div>
+  <p class="success-msg">
+    Votre inscription au Championnat Régional ELITE CONTINENTALE a été soumise avec succès.
+    Conservez votre numéro de référence.
+  </p>
   <div class="success-ref" id="success-ref">RÉFÉRENCE : EC-XXXXXX</div>
-  <button class="btn-primary" onclick="showPage('home')">RETOUR À L'ACCUEIL</button>
+  <button class="btn-primary" onclick="showPage('home')">← RETOUR À L'ACCUEIL</button>
 </div>
- 
-<!-- ====================== ADMIN PAGE ====================== -->
+
+<!-- =================== ADMIN =================== -->
 <div id="page-admin" class="page">
-  <!-- Login screen -->
   <div class="admin-login" id="admin-login">
     <div class="login-box">
       <div class="login-logo">ELITE CONTINENTALE</div>
-      <div class="login-sub">Espace Administrateur</div>
+      <div class="login-sub">Espace Administrateur Sécurisé</div>
       <div class="field-group">
         <label class="field-label">Identifiant</label>
-        <input type="text" id="admin-user" placeholder="admin" onkeydown="if(event.key==='Enter') doLogin()">
+        <input type="text" id="admin-user" placeholder="admin" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
-      <div class="field-group">
+      <div class="field-group" style="margin-top:16px;">
         <label class="field-label">Mot de passe</label>
-        <input type="password" id="admin-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+        <input type="password" id="admin-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <button class="btn-login" onclick="doLogin()">CONNEXION</button>
-      <div class="login-err" id="login-err">Identifiant ou mot de passe incorrect</div>
-      <div style="margin-top:24px;">
-        <button class="back-btn" style="justify-content:center; width:100%;" onclick="showPage('home')">Retour à l'accueil</button>
+      <div class="login-err" id="login-err">⚠️ Identifiant ou mot de passe incorrect</div>
+      <div style="margin-top:32px;">
+        <button class="back-btn" style="justify-content:center;width:100%;" onclick="showPage('home')">Retour à l'accueil</button>
       </div>
     </div>
   </div>
- 
-  <!-- Dashboard -->
   <div class="admin-dash" id="admin-dash">
     <div class="admin-top">
-      <div class="admin-top-logo">ELITE CONTINENTALE — ADMIN</div>
+      <div class="admin-top-logo">⚡ ELITE CONTINENTALE — ADMIN</div>
       <div class="admin-top-right">
-        <span class="admin-user" id="admin-username">admin</span>
+        <span class="admin-user">🔐 Administrateur connecté</span>
         <button class="btn-logout" onclick="doLogout()">Déconnexion</button>
       </div>
     </div>
     <div class="admin-content">
-      <div class="admin-stats-row" id="admin-stats">
-        <div class="admin-stat">
-          <div class="admin-stat-num" id="count-total">0</div>
-          <div class="admin-stat-label">Total inscrits</div>
-        </div>
-        <div class="admin-stat">
-          <div class="admin-stat-num" id="count-pdf">0</div>
-          <div class="admin-stat-label">Dossiers médicaux</div>
-        </div>
-        <div class="admin-stat">
-          <div class="admin-stat-num" id="count-today">0</div>
-          <div class="admin-stat-label">Inscrits aujourd'hui</div>
-        </div>
-        <div class="admin-stat">
-          <div class="admin-stat-num" id="count-regions">0</div>
-          <div class="admin-stat-label">Régions représentées</div>
-        </div>
+      <div class="admin-stats-row">
+        <div class="admin-stat"><div class="admin-stat-num" id="count-total">—</div><div class="admin-stat-label">Total inscrits</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="count-pdf">—</div><div class="admin-stat-label">Dossiers médicaux</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="count-today">—</div><div class="admin-stat-label">Inscrits aujourd'hui</div></div>
+        <div class="admin-stat"><div class="admin-stat-num" id="count-regions">—</div><div class="admin-stat-label">Régions représentées</div></div>
       </div>
- 
       <div class="admin-section-title">Liste des inscriptions</div>
- 
       <div class="admin-toolbar">
-        <input type="text" id="search-input" placeholder="Rechercher par nom, prénom, région…" oninput="filterTable()">
+        <input type="text" id="search-input" placeholder="Rechercher nom, prénom, région…" oninput="filterTable()">
         <select id="filter-region" onchange="filterTable()">
           <option value="">Toutes les régions</option>
           <option>Adamaoua</option><option>Centre</option><option>Est</option>
-          <option>Extrême-Nord</option><option>Littoral</option><option>Nord</option>
+          <option>Extreme-Nord</option><option>Littoral</option><option>Nord</option>
           <option>Nord-Ouest</option><option>Ouest</option><option>Sud</option><option>Sud-Ouest</option>
         </select>
-        <button class="btn-export" onclick="exportCSV()">↓ Exporter CSV</button>
+        <button class="btn-refresh" onclick="loadDashboard()">↻ Actualiser</button>
+        <button class="btn-export" onclick="exportCSV()">↓ CSV</button>
       </div>
- 
       <div class="registrations-table-wrap">
-        <table id="reg-table">
+        <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>Nom &amp; Prénom</th>
-              <th>Date de naiss.</th>
-              <th>Région</th>
-              <th>Téléphone</th>
-              <th>Catégorie</th>
-              <th>Dossier médical</th>
-              <th>Date d'inscription</th>
-              <th>Actions</th>
+              <th>#</th><th>Référence</th><th>Nom &amp; Prénom</th>
+              <th>Naissance</th><th>Région</th><th>Téléphone</th>
+              <th>Catégorie</th><th>Dossier</th><th>Inscrit le</th><th>Actions</th>
             </tr>
           </thead>
           <tbody id="reg-tbody"></tbody>
@@ -1053,71 +912,227 @@
     </div>
   </div>
 </div>
- 
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="modal-title">Détails de l'inscription</div>
+      <div class="modal-title" id="modal-title">Détails</div>
       <button class="modal-close" onclick="closeModalDirect()">✕</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
- 
-<!-- NOTIFICATION -->
+
+<!-- NOTIF -->
 <div class="notif" id="notif"></div>
- 
+
 <script>
 // ============================================================
-//  BACKEND CONNECTIVITY
+//  CONFIG API
 // ============================================================
-const API_BASE = 'http://localhost:4000/api';
-const ADMIN_CREDS = { user: 'admin', pass: 'ElitePower2024!' };
-const ADMIN_API_TOKEN = 'ElitePower2024!';
-let adminToken = null;
-let pdfFile = null;
+const API = 'https://elite-continentale-api.onrender.com/api';
+const ADMIN_TOKEN = 'ElitePower2024!';
 
 // ============================================================
-//  PAGE NAVIGATION
+//  FLAMMES DORÉES — FIRE EFFECT
+// ============================================================
+(function initFire() {
+  const canvas = document.getElementById('fire-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Chaque flamme = une particule montante avec forme de flamme
+  const flames = [];
+  const FLAME_COUNT = 120;
+
+  function randRange(a, b) { return a + Math.random() * (b - a); }
+
+  function createFlame(forceBottom) {
+    const x = randRange(0, W);
+    const startY = forceBottom ? H + randRange(0, 60) : randRange(H * 0.3, H + 80);
+    return {
+      x: x,
+      y: startY,
+      baseX: x,
+      vy: randRange(1.2, 3.5),           // vitesse montante
+      vx: randRange(-0.5, 0.5),           // derive latérale
+      size: randRange(8, 32),             // taille de la flamme
+      life: 0,
+      maxLife: randRange(80, 200),
+      wobble: randRange(0, Math.PI * 2),  // phase oscillation
+      wobbleSpeed: randRange(0.04, 0.1),
+      wobbleAmp: randRange(0.5, 2.5),
+      // couleur: du rouge vif au doré au jaune clair
+      colorPhase: Math.random(),          // 0=rouge, 0.5=doré, 1=blanc-jaune
+      opacity: randRange(0.5, 1.0),
+      taper: randRange(0.4, 0.8),         // effilement au sommet
+    };
+  }
+
+  for (let i = 0; i < FLAME_COUNT; i++) {
+    const f = createFlame(false);
+    f.life = Math.random() * f.maxLife;
+    flames.push(f);
+  }
+
+  function getFlameColor(f, alpha) {
+    const prog = f.life / f.maxLife; // 0=naissance, 1=mort
+    // Base: rouge-orangé → doré → jaune pâle selon colorPhase
+    // Fade in premier 20%, fade out dernier 30%
+    let a = alpha;
+    if (prog < 0.2) a *= prog / 0.2;
+    if (prog > 0.7) a *= 1 - (prog - 0.7) / 0.3;
+
+    // Couleur selon colorPhase et progression
+    // Bas: rouge-orange  Milieu: doré  Haut: jaune-blanc
+    let r, g, b;
+    const cp = f.colorPhase;
+    if (cp < 0.35) {
+      // Rouge-orange vif
+      r = 220; g = Math.round(60 + cp * 200); b = 10;
+    } else if (cp < 0.65) {
+      // Doré
+      r = 210; g = 155; b = Math.round((cp - 0.35) * 200);
+    } else {
+      // Jaune-blanc lumineux
+      r = 240; g = 210; b = 80;
+    }
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function drawFlame(f) {
+    const prog = f.life / f.maxLife;
+    const s = f.size * (1 - prog * 0.5); // rétrécit en montant
+    if (s < 1) return;
+
+    ctx.save();
+    ctx.translate(f.x, f.y);
+
+    // Flamme = teardrop/ellipse effilée vers le haut
+    const grad = ctx.createRadialGradient(0, s * 0.3, 0, 0, 0, s);
+    grad.addColorStop(0, getFlameColor(f, f.opacity * 0.95));
+    grad.addColorStop(0.5, getFlameColor(f, f.opacity * 0.7));
+    grad.addColorStop(1, getFlameColor(f, 0));
+
+    ctx.fillStyle = grad;
+
+    // Forme de flamme avec bezier
+    ctx.beginPath();
+    ctx.moveTo(0, s * 0.5);  // base large
+    ctx.bezierCurveTo(
+      s * 0.5, s * 0.2,
+      s * f.taper, -s * 0.5,
+      0, -s            // pointe
+    );
+    ctx.bezierCurveTo(
+      -s * f.taper, -s * 0.5,
+      -s * 0.5, s * 0.2,
+      0, s * 0.5
+    );
+    ctx.closePath();
+    ctx.fill();
+
+    // Coeur brillant
+    const innerGrad = ctx.createRadialGradient(0, s * 0.1, 0, 0, 0, s * 0.35);
+    innerGrad.addColorStop(0, `rgba(255,240,180,${f.opacity * 0.6 * (1 - prog)})`);
+    innerGrad.addColorStop(1, 'rgba(255,200,80,0)');
+    ctx.fillStyle = innerGrad;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, s * 0.25, s * 0.4, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Halo chaud au sol (fond de flamme)
+  function drawBaseGlow() {
+    const grad = ctx.createLinearGradient(0, H * 0.75, 0, H);
+    grad.addColorStop(0, 'rgba(180,80,0,0)');
+    grad.addColorStop(0.6, 'rgba(200,100,10,0.06)');
+    grad.addColorStop(1, 'rgba(220,120,20,0.14)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, H * 0.75, W, H * 0.25);
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    drawBaseGlow();
+
+    flames.forEach((f, i) => {
+      f.life++;
+      f.y -= f.vy;
+      f.wobble += f.wobbleSpeed;
+      f.x = f.baseX + Math.sin(f.wobble) * f.wobbleAmp * (f.size / 8);
+      f.baseX += f.vx * 0.3;
+
+      if (f.life >= f.maxLife || f.y < -80) {
+        flames[i] = createFlame(true);
+      }
+      drawFlame(f);
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ============================================================
+//  PAGE NAV
 // ============================================================
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   window.scrollTo(0, 0);
-  if (id === 'home') updateHomeStats();
+  if (id === 'home') loadStats();
+  if (id === 'form') wakeUpServer();
 }
 
-function updateHomeStats() {
-  fetch(`${API_BASE}/stats`)
-    .then(async response => {
-      if (!response.ok) throw new Error('Impossible de récupérer les statistiques');
-      return response.json();
-    })
-    .then(data => {
-      document.getElementById('stat-inscrits').textContent = data.total || 0;
-    })
-    .catch(() => {
-      document.getElementById('stat-inscrits').textContent = '—';
-    });
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/stats`);
+    if (res.ok) {
+      const d = await res.json();
+      document.getElementById('stat-inscrits').textContent = d.total ?? '—';
+    }
+  } catch(e) {}
 }
- 
+
+async function wakeUpServer() {
+  const banner = document.getElementById('api-banner');
+  banner.className = 'api-banner waking';
+  try {
+    await fetch(`${API}/stats`, { signal: AbortSignal.timeout(60000) });
+    banner.style.display = 'none';
+  } catch(e) {
+    banner.className = 'api-banner err';
+    banner.textContent = '⚠️ SERVEUR INDISPONIBLE — RÉESSAYEZ DANS QUELQUES INSTANTS';
+  }
+}
+
 // ============================================================
-//  PDF HANDLING
+//  PDF
 // ============================================================
+let selectedPdfFile = null;
+
 function handlePdfSelect(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.type !== 'application/pdf') { showNotif('Seuls les fichiers PDF sont acceptés.', 'error'); input.value = ''; return; }
-  if (file.size > 5 * 1024 * 1024) { showNotif('Fichier trop volumineux (max 5 Mo).', 'error'); input.value = ''; return; }
-
-  pdfFile = file;
+  if (file.type !== 'application/pdf') { showNotif('Seuls les fichiers PDF sont acceptés.', 'error'); input.value=''; return; }
+  if (file.size > 5 * 1024 * 1024) { showNotif('Fichier trop volumineux (max 5 Mo).', 'error'); input.value=''; return; }
+  selectedPdfFile = file;
   document.getElementById('pdf-success').style.display = 'flex';
-  document.getElementById('pdf-filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' Ko)';
-  document.getElementById('err-pdf').style.display = 'none';
+  document.getElementById('pdf-filename').textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' Ko)';
+  document.getElementById('err-pdf').classList.remove('show');
 }
 
-// Drag & drop
 const uz = document.getElementById('upload-zone');
 uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag-over'); });
 uz.addEventListener('dragleave', () => uz.classList.remove('drag-over'));
@@ -1132,175 +1147,141 @@ uz.addEventListener('drop', e => {
 });
 
 // ============================================================
-//  FORM VALIDATION & SUBMIT
+//  VALIDATION
 // ============================================================
-document.getElementById('reg-form').addEventListener('submit', function(e) {
+document.getElementById('reg-form').addEventListener('submit', async function(e) {
   e.preventDefault();
-  if (!validateForm()) return;
-  submitRegistration();
+  if (validateForm()) await submitRegistration();
 });
- 
+
 function validateForm() {
   let ok = true;
   const regexText = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/;
-  const regexTel = /^\+?[0-9 ]{8,20}$/;
-
-  function setError(el, err, message) {
-    el.classList.add('invalid');
-    err.textContent = message;
-    err.classList.add('show');
-    el.addEventListener('input', () => {
-      el.classList.remove('invalid');
-      err.classList.remove('show');
-      err.textContent = 'Ce champ est obligatoire';
-    }, { once: true });
-  }
+  const regexTel  = /^\+?[0-9 ]{8,20}$/;
 
   const fields = [
-    { id: 'nom', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un nom valide sans chiffres.' },
-    { id: 'prenom', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un prénom valide sans chiffres.' },
-    { id: 'ddn', required: true },
-    { id: 'lieu-naissance', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir un lieu sans chiffres.' },
-    { id: 'tel', required: true, validator: value => regexTel.test(value), invalidMessage: 'Merci de saisir un numéro de téléphone valide.' },
-    { id: 'categorie', required: true },
-    { id: 'region', required: true },
-    { id: 'ville', required: true, validator: value => regexText.test(value), invalidMessage: 'Merci de saisir une ville valide sans chiffres.' }
+    { id:'nom',            req:true, fn: v => regexText.test(v), msg:'Nom invalide (sans chiffres)' },
+    { id:'prenom',         req:true, fn: v => regexText.test(v), msg:'Prénom invalide' },
+    { id:'ddn',            req:true },
+    { id:'lieu-naissance', req:true, fn: v => regexText.test(v), msg:'Lieu invalide' },
+    { id:'tel',            req:true, fn: v => regexTel.test(v),  msg:'Numéro invalide' },
+    { id:'categorie',      req:true },
+    { id:'region',         req:true },
+    { id:'ville',          req:true, fn: v => regexText.test(v), msg:'Ville invalide' },
   ];
 
-  fields.forEach(field => {
-    const el = document.getElementById('f-' + field.id);
-    const err = document.getElementById('err-' + field.id);
-    const value = el.value.trim();
-
-    if (field.required && !value) {
-      setError(el, err, 'Ce champ est obligatoire');
-      ok = false;
-      return;
+  fields.forEach(f => {
+    const el  = document.getElementById('f-' + f.id);
+    const err = document.getElementById('err-' + f.id);
+    const val = el.value.trim();
+    if (f.req && !val) {
+      el.classList.add('invalid'); err.textContent = 'Ce champ est obligatoire'; err.classList.add('show'); ok = false;
+    } else if (f.fn && val && !f.fn(val)) {
+      el.classList.add('invalid'); err.textContent = f.msg; err.classList.add('show'); ok = false;
+    } else {
+      el.classList.remove('invalid'); err.classList.remove('show');
     }
-
-    if (field.validator && value && !field.validator(value)) {
-      setError(el, err, field.invalidMessage);
-      ok = false;
-      return;
-    }
-
-    el.classList.remove('invalid');
-    err.classList.remove('show');
-    err.textContent = 'Ce champ est obligatoire';
+    el.addEventListener('input', () => { el.classList.remove('invalid'); err.classList.remove('show'); }, { once:true });
   });
 
-  const cb1 = document.getElementById('cb-reglement');
-  const cb2 = document.getElementById('cb-medical');
-  const cbErr = document.getElementById('err-cb');
-  if (!cb1.checked || !cb2.checked) {
-    cbErr.style.display = 'block';
-    ok = false;
-  } else {
-    cbErr.style.display = 'none';
-  }
+  // PDF optionnel — pas de validation obligatoire
 
-  document.getElementById('err-pdf').style.display = 'none';
+  const cbErr = document.getElementById('err-cb');
+  if (!document.getElementById('cb-reglement').checked || !document.getElementById('cb-medical').checked) {
+    cbErr.classList.add('show'); ok = false;
+  } else { cbErr.classList.remove('show'); }
+
   return ok;
 }
 
-function submitRegistration() {
+// ============================================================
+//  SUBMIT
+// ============================================================
+async function submitRegistration() {
   const btn = document.getElementById('btn-submit');
   btn.disabled = true;
-  btn.textContent = 'ENVOI EN COURS…';
+  btn.innerHTML = '<span class="spinner"></span>ENVOI EN COURS…';
 
-  const form = document.getElementById('reg-form');
-  const formData = new FormData(form);
-  if (pdfFile) formData.set('pdf', pdfFile);
+  const fd = new FormData();
+  fd.append('nom',            document.getElementById('f-nom').value.trim());
+  fd.append('prenom',         document.getElementById('f-prenom').value.trim());
+  fd.append('ddn',            document.getElementById('f-ddn').value);
+  fd.append('lieu_naissance', document.getElementById('f-lieu-naissance').value.trim());
+  fd.append('tel',            document.getElementById('f-tel').value.trim());
+  fd.append('categorie',      document.getElementById('f-categorie').value);
+  fd.append('region',         document.getElementById('f-region').value);
+  fd.append('ville',          document.getElementById('f-ville').value.trim());
+  fd.append('club',           document.getElementById('f-club').value.trim());
+  if (selectedPdfFile) fd.append('pdf', selectedPdfFile);
 
-  fetch(`${API_BASE}/register`, {
-    method: 'POST',
-    body: formData
-  })
-    .then(async response => {
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Erreur lors de l’enregistrement');
-      return data;
-    })
-    .then(data => {
+  try {
+    const res = await fetch(`${API}/register`, { method:'POST', body:fd });
+    const data = await res.json();
+    if (res.ok && data.ref) {
       document.getElementById('success-ref').textContent = 'RÉFÉRENCE : ' + data.ref;
       document.getElementById('reg-form').reset();
-      pdfFile = null;
+      selectedPdfFile = null;
       document.getElementById('pdf-success').style.display = 'none';
       showPage('success');
-    })
-    .catch(error => {
-      showNotif(error.message, 'error');
-    })
-    .finally(() => {
-      btn.disabled = false;
-      btn.textContent = 'SOUMETTRE L\'INSCRIPTION';
-    });
+    } else {
+      showNotif('Erreur : ' + (data.error || 'Réessayez.'), 'error');
+    }
+  } catch(err) {
+    showNotif('⏳ Serveur en démarrage — patientez 30s et réessayez.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "SOUMETTRE L'INSCRIPTION";
+  }
 }
 
 // ============================================================
-//  ADMIN AUTH
+//  ADMIN
 // ============================================================
 function doLogin() {
   const u = document.getElementById('admin-user').value.trim();
   const p = document.getElementById('admin-pass').value;
-  const err = document.getElementById('login-err');
-  if (u === ADMIN_CREDS.user && p === ADMIN_CREDS.pass) {
-    err.style.display = 'none';
-    adminToken = ADMIN_API_TOKEN;
+  if (u === 'admin' && p === ADMIN_TOKEN) {
+    document.getElementById('login-err').style.display = 'none';
     document.getElementById('admin-login').style.display = 'none';
     document.getElementById('admin-dash').style.display = 'block';
-    document.getElementById('admin-username').textContent = u;
     loadDashboard();
   } else {
-    err.style.display = 'block';
+    document.getElementById('login-err').style.display = 'block';
     document.getElementById('admin-pass').value = '';
   }
 }
 
 function doLogout() {
-  adminToken = null;
   document.getElementById('admin-login').style.display = 'flex';
   document.getElementById('admin-dash').style.display = 'none';
+  allRegs = [];
   document.getElementById('admin-user').value = '';
   document.getElementById('admin-pass').value = '';
   showPage('home');
 }
 
-// ============================================================
-//  ADMIN DASHBOARD
-// ============================================================
 let allRegs = [];
 
-function loadDashboard() {
-  fetch(`${API_BASE}/registrations`, {
-    headers: { 'x-admin-token': adminToken }
-  })
-    .then(async response => {
-      if (!response.ok) {
-        const body = await response.json();
-        throw new Error(body.error || 'Impossible de charger les inscriptions');
-      }
-      return response.json();
-    })
-    .then(data => {
-      allRegs = data;
-      updateStats();
-      renderTable(allRegs);
-    })
-    .catch(error => {
-      showNotif(error.message, 'error');
-    });
+async function loadDashboard() {
+  showNotif('Chargement des inscriptions…', 'info');
+  try {
+    const res = await fetch(`${API}/registrations`, { headers: { 'x-admin-token': ADMIN_TOKEN } });
+    if (!res.ok) { showNotif('Erreur ' + res.status, 'error'); return; }
+    allRegs = await res.json();
+    updateStats();
+    renderTable(allRegs);
+    showNotif(allRegs.length + ' inscription(s) chargée(s) ✓', 'success');
+  } catch(e) {
+    showNotif('Impossible de contacter le serveur.', 'error');
+  }
 }
 
 function updateStats() {
   const today = new Date().toDateString();
-  const todayCount = allRegs.filter(r => new Date(r.createdAt).toDateString() === today).length;
-  const pdfCount = allRegs.filter(r => r.pdfUrl).length;
-  const regions = new Set(allRegs.map(r => r.region)).size;
-  document.getElementById('count-total').textContent = allRegs.length;
-  document.getElementById('count-pdf').textContent = pdfCount;
-  document.getElementById('count-today').textContent = todayCount;
-  document.getElementById('count-regions').textContent = regions;
+  document.getElementById('count-total').textContent   = allRegs.length;
+  document.getElementById('count-pdf').textContent     = allRegs.filter(r => r.pdfPath).length;
+  document.getElementById('count-today').textContent   = allRegs.filter(r => new Date(r.createdAt).toDateString() === today).length;
+  document.getElementById('count-regions').textContent = new Set(allRegs.map(r => r.region)).size;
 }
 
 function renderTable(regs) {
@@ -1311,22 +1292,20 @@ function renderTable(regs) {
   empty.style.display = 'none';
   regs.forEach((r, i) => {
     const d = new Date(r.createdAt);
-    const dateStr = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
-    const hasPdf = !!r.pdfUrl;
+    const dateStr = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="muted">${i+1}</td>
+      <td style="color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;font-size:14px;">${r.ref}</td>
       <td><strong>${r.nom}</strong> ${r.prenom}</td>
-      <td class="muted">${r.ddn || '—'}</td>
+      <td class="muted">${r.ddn||'—'}</td>
       <td>${r.region}</td>
       <td class="muted">${r.tel}</td>
-      <td>${r.categorie}</td>
-      <td>
-        ${hasPdf
-          ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})">📄 Voir PDF</span>`
-          : `<span class="badge badge-nopdf">Non fourni</span>`}
-      </td>
-      <td class="muted">${dateStr}</td>
+      <td style="font-size:14px;">${r.categorie}</td>
+      <td>${r.pdfPath
+        ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})">📄 Voir PDF</span>`
+        : `<span class="badge badge-nopdf">Non fourni</span>`}</td>
+      <td class="muted" style="font-size:14px;">${dateStr}</td>
       <td>
         <button class="btn-view" onclick="viewDetails(${r.id})">Détails</button>
         <button class="btn-delete" onclick="deleteReg(${r.id})">✕</button>
@@ -1337,83 +1316,76 @@ function renderTable(regs) {
 
 function filterTable() {
   const q = document.getElementById('search-input').value.toLowerCase();
-  const region = document.getElementById('filter-region').value;
-  const filtered = allRegs.filter(r => {
-    const text = (r.nom + ' ' + r.prenom + ' ' + r.region + ' ' + r.ville + ' ' + r.tel).toLowerCase();
-    const matchQ = !q || text.includes(q);
-    const matchR = !region || r.region === region;
-    return matchQ && matchR;
-  });
-  renderTable(filtered);
+  const reg = document.getElementById('filter-region').value;
+  renderTable(allRegs.filter(r => {
+    const txt = (r.nom+' '+r.prenom+' '+r.region+' '+r.ville+' '+r.tel).toLowerCase();
+    return (!q || txt.includes(q)) && (!reg || r.region === reg);
+  }));
 }
 
 function viewDetails(id) {
   const r = allRegs.find(x => x.id === id);
   if (!r) return;
-  const d = new Date(r.createdAt);
   document.getElementById('modal-title').textContent = r.nom + ' ' + r.prenom;
   document.getElementById('modal-body').innerHTML = `
-    <div class="detail-row"><span class="detail-key">Référence</span><span class="detail-val" style="color:var(--gold)">${r.ref||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Référence</span><span class="detail-val" style="color:var(--gold)">${r.ref}</span></div>
     <div class="detail-row"><span class="detail-key">Nom</span><span class="detail-val">${r.nom}</span></div>
     <div class="detail-row"><span class="detail-key">Prénom</span><span class="detail-val">${r.prenom}</span></div>
-    <div class="detail-row"><span class="detail-key">Date de naissance</span><span class="detail-val">${r.ddn||'—'}</span></div>
-    <div class="detail-row"><span class="detail-key">Lieu de naissance</span><span class="detail-val">${r.lieuNaissance||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Date naissance</span><span class="detail-val">${r.ddn||'—'}</span></div>
+    <div class="detail-row"><span class="detail-key">Lieu naissance</span><span class="detail-val">${r.lieuNaissance||'—'}</span></div>
     <div class="detail-row"><span class="detail-key">Téléphone</span><span class="detail-val">${r.tel}</span></div>
     <div class="detail-row"><span class="detail-key">Catégorie</span><span class="detail-val">${r.categorie}</span></div>
     <div class="detail-row"><span class="detail-key">Région</span><span class="detail-val">${r.region}</span></div>
-    <div class="detail-row"><span class="detail-key">Ville / Résidence</span><span class="detail-val">${r.ville}</span></div>
+    <div class="detail-row"><span class="detail-key">Ville</span><span class="detail-val">${r.ville}</span></div>
     <div class="detail-row"><span class="detail-key">Club</span><span class="detail-val">${r.club||'—'}</span></div>
-    <div class="detail-row"><span class="detail-key">Dossier médical</span><span class="detail-val">${r.pdfUrl ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})" style="cursor:pointer">📄 ${r.pdfName||'Voir PDF'}</span>` : '<span class="badge badge-nopdf">Non fourni</span>'}</span></div>
-    <div class="detail-row"><span class="detail-key">Date d'inscription</span><span class="detail-val">${d.toLocaleString('fr-FR')}</span></div>`;
+    <div class="detail-row"><span class="detail-key">Dossier médical</span><span class="detail-val">
+      ${r.pdfPath
+        ? `<span class="badge badge-pdf" onclick="viewPdf(${r.id})">📄 ${r.pdfName||'Voir PDF'}</span>`
+        : '<span class="badge badge-nopdf">Non fourni</span>'}
+    </span></div>
+    <div class="detail-row"><span class="detail-key">Date inscription</span><span class="detail-val">${new Date(r.createdAt).toLocaleString('fr-FR')}</span></div>`;
   document.getElementById('modal-overlay').classList.add('open');
 }
 
 function viewPdf(id) {
-  const r = allRegs.find(x => x.id === id);
-  if (!r || !r.pdfUrl) return;
-  window.open(r.pdfUrl, '_blank');
+  fetch(`${API}/registrations/${id}/pdf`, { headers:{ 'x-admin-token': ADMIN_TOKEN }})
+    .then(res => { if (!res.ok) throw new Error(); return res.blob(); })
+    .then(blob => window.open(URL.createObjectURL(blob), '_blank'))
+    .catch(() => showNotif('Impossible de charger le PDF.', 'error'));
 }
 
-function deleteReg(id) {
-  if (!confirm('Supprimer cette inscription ?')) return;
-  fetch(`${API_BASE}/registrations/${id}`, {
-    method: 'DELETE',
-    headers: { 'x-admin-token': adminToken }
-  })
-    .then(async response => {
-      if (!response.ok) {
-        const body = await response.json();
-        throw new Error(body.error || 'Impossible de supprimer l’inscription');
-      }
-      return response.json();
-    })
-    .then(() => {
-      allRegs = allRegs.filter(r => r.id !== id);
-      updateStats();
-      filterTable();
-      showNotif('Inscription supprimée.', 'success');
-    })
-    .catch(error => {
-      showNotif(error.message, 'error');
+async function deleteReg(id) {
+  if (!confirm('Supprimer définitivement cette inscription ?')) return;
+  try {
+    const res = await fetch(`${API}/registrations/${id}`, {
+      method: 'DELETE', headers: { 'x-admin-token': ADMIN_TOKEN }
     });
+    if (res.ok) {
+      allRegs = allRegs.filter(r => r.id !== id);
+      updateStats(); filterTable();
+      showNotif('Inscription supprimée.', 'success');
+    } else { showNotif('Erreur lors de la suppression.', 'error'); }
+  } catch(e) { showNotif('Erreur réseau.', 'error'); }
 }
 
-function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModal(e) { if (e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
 function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
 
 function exportCSV() {
-  const rows = [['Ref','Nom','Prenom','Date naissance','Lieu naissance','Telephone','Categorie','Region','Ville','Club','PDF','Date inscription']];
-  allRegs.forEach(r => {
-    rows.push([r.ref||'', r.nom, r.prenom, r.ddn, r.lieuNaissance, r.tel, r.categorie, r.region, r.ville, r.club||'', r.pdfUrl?'Oui':'Non', new Date(r.createdAt).toLocaleString('fr-FR')]);
-  });
+  const rows = [['Ref','Nom','Prenom','Date naissance','Lieu naissance','Tel','Categorie','Region','Ville','Club','PDF','Date inscription']];
+  allRegs.forEach(r => rows.push([
+    r.ref, r.nom, r.prenom, r.ddn, r.lieuNaissance, r.tel,
+    r.categorie, r.region, r.ville, r.club||'',
+    r.pdfPath?'Oui':'Non', new Date(r.createdAt).toLocaleString('fr-FR')
+  ]));
   const csv = rows.map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
-  a.download = 'elite_continentale_inscriptions.csv';
+  a.download = 'elite_continentale.csv';
   a.click();
-  showNotif('Export CSV téléchargé.', 'success');
+  showNotif('CSV exporté !', 'success');
 }
- 
+
 // ============================================================
 //  NOTIFICATIONS
 // ============================================================
@@ -1421,9 +1393,9 @@ function showNotif(msg, type) {
   const n = document.getElementById('notif');
   n.textContent = msg;
   n.className = 'notif ' + type + ' show';
-  setTimeout(() => n.classList.remove('show'), 3500);
+  setTimeout(() => n.classList.remove('show'), 4000);
 }
- 
+
 // ============================================================
 //  INIT
 // ============================================================
@@ -1431,4 +1403,3 @@ showPage('home');
 </script>
 </body>
 </html>
- 
